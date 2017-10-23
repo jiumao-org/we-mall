@@ -1,6 +1,9 @@
 package org.jiumao.wechatMall.common;
 /**
  * 登陆认证服务
+ * <p>
+ * 一个上下文应用，登陆应该至少保证 {@link #id}或者某些字段不为空。
+ * 否则没有登陆验证
  * @author ppf@jiumao.org
  * @date 2017年10月23日
  */

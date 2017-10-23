@@ -14,6 +14,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.jiumao.wechatMall.common.Authentication;
+import org.jiumao.wechatMall.common.User;
+import org.jiumao.wechatMall.util.JsonUtil;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,8 +37,11 @@ public class IndexResource {
 			@FormParam("userName") String userName,
 			@FormParam("password") String password,
 			@FormParam("verificationCode") String verificationCode) {
-		auth.setId("token");
-		return "{msg:'ok'}";
+		// check not null
+		User u = new User();//dao 应该查询
+		
+		auth.setId(""+u.getId());
+		return JsonUtil.bean2Json(u);
 	}
 
 	@GET
@@ -44,7 +49,7 @@ public class IndexResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String info(@PathParam("id") String name,
 			@Context Authentication auth) {
-		return "18";
+		return "{}";
 	}
 
 }
