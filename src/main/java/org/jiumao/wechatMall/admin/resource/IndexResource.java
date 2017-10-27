@@ -13,8 +13,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import org.jiumao.wechatMall.common.Authentication;
 import org.jiumao.wechatMall.common.constant.LoggerName;
+import org.jiumao.wechatMall.common.servlet.AuthService;
 import org.jiumao.wechatMall.entity.User;
 import org.jiumao.wechatMall.service.UserService;
 import org.jiumao.wechatMall.util.IdGenerator;
@@ -43,7 +43,7 @@ public class IndexResource {
 	@Path("login")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String login(@Context Authentication auth,
+	public String login(@Context AuthService auth,
 			@FormParam("userName") String userName,
 			@FormParam("password") String password,
 			@FormParam("verificationCode") String verificationCode,
@@ -64,7 +64,7 @@ public class IndexResource {
 	@Path("register")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String register(@Context Authentication auth,
+	public String register(@Context AuthService auth,
 			@FormParam("userName") String userName,
 			@FormParam("password") String password,
 			@FormParam("phone") Long phone, @FormParam("email") String email,
@@ -82,8 +82,8 @@ public class IndexResource {
 		IdGenerator.backup();
 		u.setUserId(userId);
 		u.setUserName(userName);
-		int res = userService.insertNonEmptyUser(u);
-		auth= new Authentication();
+//		int res = userService.insertNonEmptyUser(u);
+		System.out.println(auth);
 		auth.setId("" + u.getId());
 		return JsonUtil.bean2Json(u);
 	}
@@ -92,7 +92,7 @@ public class IndexResource {
 	@Path("info/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String info(@PathParam("id") String name,
-			@Context Authentication auth) {
+			@Context AuthService auth) {
 		return "{}";
 	}
 
