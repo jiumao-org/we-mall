@@ -1,7 +1,9 @@
 package org.jiumao.wechatMall.admin.resource;
 
 import javax.annotation.Resource;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -15,10 +17,10 @@ import org.jiumao.wechatMall.common.Authentication;
 import org.jiumao.wechatMall.common.constant.LoggerName;
 import org.jiumao.wechatMall.entity.User;
 import org.jiumao.wechatMall.service.UserService;
+import org.jiumao.wechatMall.util.IdGenerator;
 import org.jiumao.wechatMall.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -39,12 +41,13 @@ public class IndexResource {
 
 	@POST
 	@Path("login")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String login(@Context Authentication auth,
-			@QueryParam("userName") String userName,
-			@QueryParam("password") String password,
-			@QueryParam("verificationCode") String verificationCode,
-			@QueryParam("phone") Integer phone) {
+			@FormParam("userName") String userName,
+			@FormParam("password") String password,
+			@FormParam("verificationCode") String verificationCode,
+			@FormParam("phone") Long phone) {
 		// check not null
 		User u = new User();// dao 应该查询
 		u.setPhone(phone);
@@ -59,13 +62,14 @@ public class IndexResource {
 
 	@POST
 	@Path("register")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String register(@Context Authentication auth,
-			@QueryParam("userName") String userName,
-			@QueryParam("password") String password,
-			@QueryParam("phone") Integer phone,
-			@QueryParam("email") String email, @QueryParam("nick") String nick,
-			@QueryParam("addr") String addr, @QueryParam("gender") String gender) {
+			@FormParam("userName") String userName,
+			@FormParam("password") String password,
+			@FormParam("phone") Long phone, @FormParam("email") String email,
+			@FormParam("nick") String nick, @FormParam("addr") String addr,
+			@FormParam("gender") String gender) {
 		// check not null
 		User u = new User();// dao 应该查询
 		u.setAddr(addr);
@@ -74,11 +78,12 @@ public class IndexResource {
 		u.setNick(nick);
 		u.setPassword(password);
 		u.setPhone(phone);
-		Long userId = 0L;
+		Long userId = IdGenerator.getUserId();
+		IdGenerator.backup();
 		u.setUserId(userId);
 		u.setUserName(userName);
 		int res = userService.insertNonEmptyUser(u);
-
+		auth= new Authentication();
 		auth.setId("" + u.getId());
 		return JsonUtil.bean2Json(u);
 	}

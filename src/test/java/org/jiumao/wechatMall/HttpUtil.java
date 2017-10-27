@@ -19,9 +19,10 @@ import java.util.Set;
  * @author ppf
  * @since 2017年7月12日
  */
+@SuppressWarnings("restriction")
 public final class HttpUtil {
     /** jdk <= 7 */
-    public static final BASE64Encoder BASE64 = new BASE64Encoder();
+	public static final BASE64Encoder BASE64 = new BASE64Encoder();
     public static final byte[] EMPTY_ABYTE = new byte[0];
 
     public static String sendGet(String url, String param) throws Exception {
@@ -107,7 +108,9 @@ public final class HttpUtil {
         in.close();
         return result;
     }
-
+    
+    
+    
     private static void buliderConnectionHeader(URLConnection connection) {
         connection.setRequestProperty("accept", "*/*");
         connection.setRequestProperty("connection", "Keep-Alive");
@@ -127,5 +130,8 @@ public final class HttpUtil {
             conn.addRequestProperty(a.getKey(), a.getValue());
         }
     }
+    
+    
+    
 
 }

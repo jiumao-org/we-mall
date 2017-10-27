@@ -11,4 +11,6 @@ public class LoggerName {
 	public static final String Status= "JiumaoStats";
 	public static final String Error= "JiumaoError";
 	public static final String Transaction= "JiumaoTransaction";
+	/**文件存储日志*/
+	public static final String Store= "JiumaoStore";
 }

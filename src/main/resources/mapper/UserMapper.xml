@@ -1,258 +1,273 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jiumao.wechatMall.dao.UserDao">
-    <!-- User的resultMap,column是给数据库列起的别名,它对应property类的属性-->
-    <resultMap id="result_User_Map" type="org.jiumao.wechatMall.entity.User">
-        <id column="id" property="id" />
-        <result column="user_id" property="userId" />
-        <result column="phone" property="phone" />
-        <result column="password" property="password" />
-        <result column="email" property="email" />
-        <result column="gender" property="gender" />
-        <result column="addr" property="addr" />
-        <result column="nick" property="nick" />
-        <result column="user_name" property="userName" />
-    </resultMap>
+	<!-- User的resultMap,column是给数据库列起的别名,它对应property类的属性 -->
+	<resultMap id="result_User_Map" type="org.jiumao.wechatMall.entity.User">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="phone" property="phone" />
+		<result column="password" property="password" />
+		<result column="email" property="email" />
+		<result column="gender" property="gender" />
+		<result column="addr" property="addr" />
+		<result column="nick" property="nick" />
+		<result column="user_name" property="userName" />
+	</resultMap>
 
-	   <!-- Assist用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
-    <sql id="Assist">
-        <where>
-            <foreach collection="require" item="req" separator=" ">
-                ${req.require} #{req.value} <if test="req.suffix != null"> ${req.suffix}</if>
-            </foreach>
-        </where>
-    </sql>
+	<!-- Assist用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
+	<sql id="Assist">
+		<where>
+			<foreach collection="require" item="req" separator=" ">
+				${req.require} #{req.value}
+				<if test="req.suffix != null"> ${req.suffix}</if>
+			</foreach>
+		</where>
+	</sql>
 
-	   <!-- updateAssist用于更新数据的使用它拓展自Assist,用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
-    <sql id="updateAssist">
-        <where>
-            <foreach collection="assist.require" item="req" separator=" ">
-                ${req.require} #{req.value} <if test="req.suffix != null"> ${req.suffix}</if>
-            </foreach>
-        </where>
-    </sql>
+	<!-- updateAssist用于更新数据的使用它拓展自Assist,用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
+	<sql id="updateAssist">
+		<where>
+			<foreach collection="assist.require" item="req" separator=" ">
+				${req.require} #{req.value}
+				<if test="req.suffix != null"> ${req.suffix}</if>
+			</foreach>
+		</where>
+	</sql>
 
-    <!-- 数据库中表名为:user的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
-    <sql id="user_Column">
-        user.id as id
-        ,user.user_id as user_id
-        ,user.phone as phone
-        ,user.password as password
-        ,user.email as email
-        ,user.gender as gender
-        ,user.addr as addr
-        ,user.nick as nick
-        ,user.user_name as user_name
-    </sql>
+	<!-- 数据库中表名为:user的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+	<sql id="user_Column">
+		user.id as id
+		,user.user_id as user_id
+		,user.phone as phone
+		,user.password as password
+		,user.email as email
+		,user.gender as gender
+		,user.addr as addr
+		,user.nick as nick
+		,user.user_name as user_name
+	</sql>
 
-    <!--获得类名为:User对应的数据库表的数据总行数 -->
-    <select id="getUserRowCount" parameterType="org.jiumao.wechatMall.common.Assist" resultType="java.lang.Long">
-        select count(id) from user
-        <if test="require!=null"><include refid="Assist" /></if>
-    </select>
-    <!-- 获得类名为:User对应数据库中表的数据集合 -->
-    <select id="selectUser" parameterType="org.jiumao.wechatMall.common.Assist"  resultMap="result_User_Map">
-        select  <if test="distinct !=null">${distinct}</if>
-        <choose>
-            <when test="resultColumn!=null">${resultColumn}</when>
-            <otherwise>
-        <include refid="user_Column" /> 
-            </otherwise>
-        </choose>
-        from user
-        <choose>
-            <when test="rowSize ==null">
-                <if test="require!=null">
-                    <include refid="Assist" />
-                </if>
-                <if test="order !=null">${order}</if>
-            </when>
-            <otherwise>
-                inner join
-                (
-                SELECT id as primary_key FROM user
-                <if test="require!=null">
-                    <include refid="Assist" />
-                </if>
-                <if test="order !=null">${order}</if>
-                <choose>
-                    <when test="startRow !=null and rowSize !=null">LIMIT #{startRow},#{rowSize} </when>
-                    <when test="rowSize !=null">LIMIT #{rowSize}</when>
-                 </choose>
-                 ) as tmp
-                 on tmp.primary_key=user.id
-            </otherwise>
-        </choose>
-    </select> 
+	<!--获得类名为:User对应的数据库表的数据总行数 -->
+	<select id="getUserRowCount" parameterType="org.jiumao.wechatMall.common.Assist"
+		resultType="java.lang.Long">
+		select count(id) from user
+		<if test="require!=null">
+			<include refid="Assist" />
+		</if>
+	</select>
+	<!-- 获得类名为:User对应数据库中表的数据集合 -->
+	<select id="selectUser" parameterType="org.jiumao.wechatMall.common.Assist"
+		resultMap="result_User_Map">
+		select
+		<if test="distinct !=null">${distinct}</if>
+		<choose>
+			<when test="resultColumn!=null">${resultColumn}</when>
+			<otherwise>
+				<include refid="user_Column" />
+			</otherwise>
+		</choose>
+		from user
+		<choose>
+			<when test="rowSize ==null">
+				<if test="require!=null">
+					<include refid="Assist" />
+				</if>
+				<if test="order !=null">${order}</if>
+			</when>
+			<otherwise>
+				inner join
+				(
+				SELECT id as primary_key FROM user
+				<if test="require!=null">
+					<include refid="Assist" />
+				</if>
+				<if test="order !=null">${order}</if>
+				<choose>
+					<when test="startRow !=null and rowSize !=null">LIMIT #{startRow},#{rowSize} </when>
+					<when test="rowSize !=null">LIMIT #{rowSize}</when>
+				</choose>
+				) as tmp
+				on tmp.primary_key=user.id
+			</otherwise>
+		</choose>
+	</select>
 
-    <!-- 获得一个User对象,以参数User对象中不为空的属性作为条件进行查询-->
-    <select id="selectUserByObj" parameterType="org.jiumao.wechatMall.entity.User" resultMap="result_User_Map">
-        select 
-            <include refid="user_Column" /> 
-        from user
-        <where>
-            <if test="userName != null "> and user.user_name = #{userName}</if>
-            <if test="nick != null "> and user.nick = #{nick}</if>
-            <if test="addr != null "> and user.addr = #{addr}</if>
-            <if test="gender != null "> and user.gender = #{gender}</if>
-            <if test="email != null "> and user.email = #{email}</if>
-            <if test="password != null "> and user.password = #{password}</if>
-            <if test="phone != null "> and user.phone = #{phone}</if>
-            <if test="userId != null "> and user.user_id = #{userId}</if>
-            <if test="id != null "> and user.id = #{id}</if>
-        </where>
-    </select> 
+	<!-- 获得一个User对象,以参数User对象中不为空的属性作为条件进行查询 -->
+	<select id="selectUserByObj" parameterType="org.jiumao.wechatMall.entity.User"
+		resultMap="result_User_Map">
+		select
+		<include refid="user_Column" />
+		from user
+		<where>
+			<if test="userName != null "> and user.user_name = #{userName}</if>
+			<if test="nick != null "> and user.nick = #{nick}</if>
+			<if test="addr != null "> and user.addr = #{addr}</if>
+			<if test="gender != null "> and user.gender = #{gender}</if>
+			<if test="email != null "> and user.email = #{email}</if>
+			<if test="password != null "> and user.password = #{password}</if>
+			<if test="phone != null "> and user.phone = #{phone}</if>
+			<if test="userId != null "> and user.user_id = #{userId}</if>
+			<if test="id != null "> and user.id = #{id}</if>
+		</where>
+	</select>
 
-    <!-- 通过User的id获得对应数据库中表的数据对象-->
-    <select id="selectUserById" parameterType="java.lang.Object" resultMap="result_User_Map">
-        select 
-            <include refid="user_Column" /> 
-        from user
-        where user.id = #{id}
-    </select> 
+	<!-- 通过User的id获得对应数据库中表的数据对象 -->
+	<select id="selectUserById" parameterType="java.lang.Object"
+		resultMap="result_User_Map">
+		select
+		<include refid="user_Column" />
+		from user
+		where user.id = #{id}
+	</select>
 
-    <!-- 将User插入到对应数据库的表中,包括属性值为null的数据-->
+	<!-- 将User插入到对应数据库的表中,包括属性值为null的数据 -->
 
-    <insert id="insertUser" parameterType="org.jiumao.wechatMall.entity.User">
-        insert into user(id,user_id,phone,password,email,gender,addr,nick,user_name) 
-        values(#{id},#{userId},#{phone},#{password},#{email},#{gender},#{addr},#{nick},#{userName})
-    </insert>
+	<insert id="insertUser" parameterType="org.jiumao.wechatMall.entity.User">
+		insert into user(id,user_id,phone,password,email,gender,addr,nick,user_name)
+		values(#{id},#{userId},#{phone},#{password},#{email},#{gender},#{addr},#{nick},#{userName})
+	</insert>
 
-    <!-- 将User中属性值不为null的数据,插入到对应数据库的表中-->
-    <insert id="insertNonEmptyUser" parameterType="org.jiumao.wechatMall.entity.User">
-        insert into user
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">id,</if>
-            <if test="userId != null">user_id,</if>
-            <if test="phone != null">phone,</if>
-            <if test="password != null">password,</if>
-            <if test="email != null">email,</if>
-            <if test="gender != null">gender,</if>
-            <if test="addr != null">addr,</if>
-            <if test="nick != null">nick,</if>
-            <if test="userName != null">user_name,</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null"> #{id},</if>
-            <if test="userId != null"> #{userId},</if>
-            <if test="phone != null"> #{phone},</if>
-            <if test="password != null"> #{password},</if>
-            <if test="email != null"> #{email},</if>
-            <if test="gender != null"> #{gender},</if>
-            <if test="addr != null"> #{addr},</if>
-            <if test="nick != null"> #{nick},</if>
-            <if test="userName != null"> #{userName},</if>
-        </trim>
-    </insert>
+	<!-- 将User中属性值不为null的数据,插入到对应数据库的表中 -->
+	<insert id="insertNonEmptyUser" parameterType="org.jiumao.wechatMall.entity.User">
+		insert into user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="userId != null">user_id,</if>
+			<if test="phone != null">phone,</if>
+			<if test="password != null">password,</if>
+			<if test="email != null">email,</if>
+			<if test="gender != null">gender,</if>
+			<if test="addr != null">addr,</if>
+			<if test="nick != null">nick,</if>
+			<if test="userName != null">user_name,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null"> #{id},</if>
+			<if test="userId != null"> #{userId},</if>
+			<if test="phone != null"> #{phone},</if>
+			<if test="password != null"> #{password},</if>
+			<if test="email != null"> #{email},</if>
+			<if test="gender != null"> #{gender},</if>
+			<if test="addr != null"> #{addr},</if>
+			<if test="nick != null"> #{nick},</if>
+			<if test="userName != null"> #{userName},</if>
+		</trim>
+	</insert>
 
-    <!-- 通过User的id将数据库表中对应的数据删除-->
-    <delete id="deleteUserById" parameterType="java.lang.Object">
-        delete from user
-        where id = #{id}
-    </delete>
+	<!-- 通过User的id将数据库表中对应的数据删除 -->
+	<delete id="deleteUserById" parameterType="java.lang.Object">
+		delete from user
+		where id = #{id}
+	</delete>
 
-    <!-- 通过辅助工具Assist中的条件将User对应的数据库表的数据删除-->
-    <delete id="deleteUser" parameterType="org.jiumao.wechatMall.common.Assist">
-        delete from user
-        <if test="require!=null"><include refid="Assist" /></if>
-    </delete>
+	<!-- 通过辅助工具Assist中的条件将User对应的数据库表的数据删除 -->
+	<delete id="deleteUser" parameterType="org.jiumao.wechatMall.common.Assist">
+		delete from user
+		<if test="require!=null">
+			<include refid="Assist" />
+		</if>
+	</delete>
 
-    <!-- 通过User的id将User的数据更新到数据库中对应的表,包括值null的数据-->
-    <update id="updateUserById" parameterType="org.jiumao.wechatMall.entity.User">
-        update user set
-            user_id=#{userId}
-            ,phone=#{phone}
-            ,password=#{password}
-            ,email=#{email}
-            ,gender=#{gender}
-            ,addr=#{addr}
-            ,nick=#{nick}
-            ,user_name=#{userName}
-        where id=#{id}
-    </update>
+	<!-- 通过User的id将User的数据更新到数据库中对应的表,包括值null的数据 -->
+	<update id="updateUserById" parameterType="org.jiumao.wechatMall.entity.User">
+		update user set
+		user_id=#{userId}
+		,phone=#{phone}
+		,password=#{password}
+		,email=#{email}
+		,gender=#{gender}
+		,addr=#{addr}
+		,nick=#{nick}
+		,user_name=#{userName}
+		where id=#{id}
+	</update>
 
-    <!-- 通过User的id将User中属性值不为null的数据更新到数据库对应的表中-->
-    <update id="updateNonEmptyUserById" parameterType="org.jiumao.wechatMall.entity.User">
-        update user
-        <set>
-            <if test="userId != null">
-                user_id=#{userId},
-            </if>
-            <if test="phone != null">
-                phone=#{phone},
-            </if>
-            <if test="password != null">
-                password=#{password},
-            </if>
-            <if test="email != null">
-                email=#{email},
-            </if>
-            <if test="gender != null">
-                gender=#{gender},
-            </if>
-            <if test="addr != null">
-                addr=#{addr},
-            </if>
-            <if test="nick != null">
-                nick=#{nick},
-            </if>
-            <if test="userName != null">
-                user_name=#{userName},
-            </if>
-        </set>
-        where id=#{id}
-    </update>
+	<!-- 通过User的id将User中属性值不为null的数据更新到数据库对应的表中 -->
+	<update id="updateNonEmptyUserById" parameterType="org.jiumao.wechatMall.entity.User">
+		update user
+		<set>
+			<if test="userId != null">
+				user_id=#{userId},
+			</if>
+			<if test="phone != null">
+				phone=#{phone},
+			</if>
+			<if test="password != null">
+				password=#{password},
+			</if>
+			<if test="email != null">
+				email=#{email},
+			</if>
+			<if test="gender != null">
+				gender=#{gender},
+			</if>
+			<if test="addr != null">
+				addr=#{addr},
+			</if>
+			<if test="nick != null">
+				nick=#{nick},
+			</if>
+			<if test="userName != null">
+				user_name=#{userName},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
 
-    <!-- 通过辅助工具Assist中的条件将User中的数据更新到数据库对应的表中,包括值为null的数据-->
-    <update id="updateUser" parameterType="map">
-        update user
-        <set>
-                id=#{enti.id},
-                user_id=#{enti.userId},
-                phone=#{enti.phone},
-                password=#{enti.password},
-                email=#{enti.email},
-                gender=#{enti.gender},
-                addr=#{enti.addr},
-                nick=#{enti.nick},
-                user_name=#{enti.userName},
-        </set>
-        <if test="assist.require!=null"><include refid="updateAssist" /></if>
-    </update>
+	<!-- 通过辅助工具Assist中的条件将User中的数据更新到数据库对应的表中,包括值为null的数据 -->
+	<update id="updateUser" parameterType="map">
+		update user
+		<set>
+			id=#{enti.id},
+			user_id=#{enti.userId},
+			phone=#{enti.phone},
+			password=#{enti.password},
+			email=#{enti.email},
+			gender=#{enti.gender},
+			addr=#{enti.addr},
+			nick=#{enti.nick},
+			user_name=#{enti.userName},
+		</set>
+		<if test="assist.require!=null">
+			<include refid="updateAssist" />
+		</if>
+	</update>
 
-    <!-- 通过辅助工具Assist中的条件将User中属性值不为null的数据更新到数据库对应的表中-->
-    <update id="updateNonEmptyUser" parameterType="map">
-        update user
-        <set>
-            <if test="enti.id != null">
-                id=#{enti.id},
-            </if>
-            <if test="enti.userId != null">
-                user_id=#{enti.userId},
-            </if>
-            <if test="enti.phone != null">
-                phone=#{enti.phone},
-            </if>
-            <if test="enti.password != null">
-                password=#{enti.password},
-            </if>
-            <if test="enti.email != null">
-                email=#{enti.email},
-            </if>
-            <if test="enti.gender != null">
-                gender=#{enti.gender},
-            </if>
-            <if test="enti.addr != null">
-                addr=#{enti.addr},
-            </if>
-            <if test="enti.nick != null">
-                nick=#{enti.nick},
-            </if>
-            <if test="enti.userName != null">
-                user_name=#{enti.userName},
-            </if>
-        </set>
-        <if test="assist.require!=null"><include refid="updateAssist" /></if>
-    </update>
+	<!-- 通过辅助工具Assist中的条件将User中属性值不为null的数据更新到数据库对应的表中 -->
+	<update id="updateNonEmptyUser" parameterType="map">
+		update user
+		<set>
+			<if test="enti.id != null">
+				id=#{enti.id},
+			</if>
+			<if test="enti.userId != null">
+				user_id=#{enti.userId},
+			</if>
+			<if test="enti.phone != null">
+				phone=#{enti.phone},
+			</if>
+			<if test="enti.password != null">
+				password=#{enti.password},
+			</if>
+			<if test="enti.email != null">
+				email=#{enti.email},
+			</if>
+			<if test="enti.gender != null">
+				gender=#{enti.gender},
+			</if>
+			<if test="enti.addr != null">
+				addr=#{enti.addr},
+			</if>
+			<if test="enti.nick != null">
+				nick=#{enti.nick},
+			</if>
+			<if test="enti.userName != null">
+				user_name=#{enti.userName},
+			</if>
+		</set>
+		<if test="assist.require!=null">
+			<include refid="updateAssist" />
+		</if>
+	</update>
 
 </mapper>

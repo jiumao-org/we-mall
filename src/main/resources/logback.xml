@@ -40,6 +40,26 @@
 			<charset class="java.nio.charset.Charset">UTF-8</charset>
 		</encoder>
 	</appender>
+	
+	<appender name="JiumaoStoreAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${user.home}/logs/wechatMall/Store.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${user.home}/logs/wechatMall/otherdays/Store.%i.log
+			</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>30</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>100MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyy-MM-dd HH:mm:ss,GMT+8} %p %t - %m%n</pattern>
+			<charset class="java.nio.charset.Charset">UTF-8</charset>
+		</encoder>
+	</appender>
 
 	<appender name="JiumaoErrorAppender"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -83,7 +103,7 @@
 	</appender>
 
 
-	<appender name="JiumaoRebalanceLockAppender"
+	<appender name="JiumaoLockAppender"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${user.home}/logs/wechatMall/lock.log</file>
 		<append>true</append>
@@ -142,7 +162,7 @@
 
 	<logger name="JiumaoStore" additivity="false">
 		<level value="INFO" />
-		<appender-ref ref="JiumaoServerAppender" />
+		<appender-ref ref="JiumaoStoreAppender" />
 	</logger>
 
 	<logger name="JiumaoError" additivity="false">
@@ -155,9 +175,9 @@
 		<appender-ref ref="JiumaoTransactionAppender" />
 	</logger>
 
-	<logger name="JiumaoRebalanceLock" additivity="false">
+	<logger name="JiumaoLock" additivity="false">
 		<level value="INFO" />
-		<appender-ref ref="JiumaoRebalanceLockAppender" />
+		<appender-ref ref="JiumaoLockAppender" />
 	</logger>
 
 	<logger name="JiumaoRemoting" additivity="false">
