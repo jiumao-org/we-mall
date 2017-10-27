@@ -1,6 +1,7 @@
 package org.jiumao.wechatMall.admin.resource;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
@@ -13,8 +14,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.jiumao.wechatMall.common.auth.AuthAnnotation;
 import org.jiumao.wechatMall.common.constant.LoggerName;
-import org.jiumao.wechatMall.common.servlet.AuthService;
 import org.jiumao.wechatMall.entity.User;
 import org.jiumao.wechatMall.service.UserService;
 import org.jiumao.wechatMall.util.IdGenerator;
@@ -43,8 +44,8 @@ public class IndexResource {
 	@Path("login")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String login(@Context AuthService auth,
-			@FormParam("userName") String userName,
+	@AuthAnnotation
+	public String login(@FormParam("userName") String userName,
 			@FormParam("password") String password,
 			@FormParam("verificationCode") String verificationCode,
 			@FormParam("phone") Long phone) {
@@ -56,7 +57,6 @@ public class IndexResource {
 		User res = userService.selectUserByObj(u);
 		log.info("login:" + phone + "|" + userName);
 
-		auth.setId("" + u.getId());
 		return JsonUtil.bean2Json(u);
 	}
 
@@ -64,8 +64,8 @@ public class IndexResource {
 	@Path("register")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String register(@Context AuthService auth,
-			@FormParam("userName") String userName,
+	@AuthAnnotation
+	public String register(@FormParam("userName") String userName,
 			@FormParam("password") String password,
 			@FormParam("phone") Long phone, @FormParam("email") String email,
 			@FormParam("nick") String nick, @FormParam("addr") String addr,
@@ -82,17 +82,15 @@ public class IndexResource {
 		IdGenerator.backup();
 		u.setUserId(userId);
 		u.setUserName(userName);
-//		int res = userService.insertNonEmptyUser(u);
-		System.out.println(auth);
-		auth.setId("" + u.getId());
+		int res = userService.insertNonEmptyUser(u);
 		return JsonUtil.bean2Json(u);
 	}
 
 	@GET
 	@Path("info/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String info(@PathParam("id") String name,
-			@Context AuthService auth) {
+	@AuthAnnotation
+	public String info(@PathParam("id") String name) {
 		return "{}";
 	}
 

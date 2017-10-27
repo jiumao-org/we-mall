@@ -1,4 +1,4 @@
-package org.jiumao.wechatMall.common;
+package org.jiumao.wechatMall.common.app;
 
 import java.io.IOException;
 

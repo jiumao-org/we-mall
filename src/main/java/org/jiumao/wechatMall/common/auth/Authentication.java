@@ -1,4 +1,4 @@
-package org.jiumao.wechatMall.common;
+package org.jiumao.wechatMall.common.auth;
 
 public class Authentication {
 
