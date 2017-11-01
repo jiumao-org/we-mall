@@ -1,7 +1,6 @@
 package org.jiumao.wechatMall.util;
 
 
-import java.io.IOException;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -20,11 +19,7 @@ public class AbortFileListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
-		try {
-			IdGenerator.recovery();
-		} catch (IOException e) {
-			log.error("Abort file recovery failure!",e.getMessage());
-		}
+		IdGenerator.recovery();
 	}
 
 }

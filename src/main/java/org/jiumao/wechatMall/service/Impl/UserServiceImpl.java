@@ -1,9 +1,8 @@
 package org.jiumao.wechatMall.service.Impl;
 import java.util.List;
-
-import org.jiumao.wechatMall.common.Assist;
 import org.jiumao.wechatMall.dao.UserDao;
 import org.jiumao.wechatMall.entity.User;
+import org.jiumao.wechatMall.common.Assist;
 import org.jiumao.wechatMall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

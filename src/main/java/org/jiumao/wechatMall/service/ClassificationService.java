@@ -1,8 +1,7 @@
 package org.jiumao.wechatMall.service;
 import java.util.List;
-
-import org.jiumao.wechatMall.common.Assist;
 import org.jiumao.wechatMall.entity.Classification;
+import org.jiumao.wechatMall.common.Assist;
 public interface ClassificationService{
 	/**
 	 * 获得Classification数据的总行数,可以通过辅助工具Assist进行条件查询,如果没有条件则传入null

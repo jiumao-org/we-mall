@@ -1,7 +1,6 @@
 package org.jiumao.wechatMall.admin.resource;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
@@ -11,14 +10,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.jiumao.wechatMall.common.auth.AuthAnnotation;
 import org.jiumao.wechatMall.common.constant.LoggerName;
 import org.jiumao.wechatMall.entity.User;
 import org.jiumao.wechatMall.service.UserService;
-import org.jiumao.wechatMall.util.IdGenerator;
 import org.jiumao.wechatMall.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Path("/admin/index")
+@Produces(MediaType.APPLICATION_JSON)
 public class IndexResource {
 	private static final Logger log = LoggerFactory
 			.getLogger(LoggerName.Server);
@@ -43,21 +41,20 @@ public class IndexResource {
 	@POST
 	@Path("login")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Produces(MediaType.APPLICATION_JSON)
 	@AuthAnnotation
-	public String login(@FormParam("userName") String userName,
+	public User login(@FormParam("userName") String userName,
 			@FormParam("password") String password,
 			@FormParam("verificationCode") String verificationCode,
 			@FormParam("phone") Long phone) {
 		// check not null
 		User u = new User();// dao 应该查询
 		u.setPhone(phone);
-		u.setUserName(userName);
+		u.setUsername(userName);
 		u.setPassword(password);
 		User res = userService.selectUserByObj(u);
 		log.info("login:" + phone + "|" + userName);
 
-		return JsonUtil.bean2Json(u);
+		return res;
 	}
 
 	@POST
@@ -78,10 +75,7 @@ public class IndexResource {
 		u.setNick(nick);
 		u.setPassword(password);
 		u.setPhone(phone);
-		Long userId = IdGenerator.getUserId();
-		IdGenerator.backup();
-		u.setUserId(userId);
-		u.setUserName(userName);
+		u.setUsername(userName);
 		int res = userService.insertNonEmptyUser(u);
 		return JsonUtil.bean2Json(u);
 	}

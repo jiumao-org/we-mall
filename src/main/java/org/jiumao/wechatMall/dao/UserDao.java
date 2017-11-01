@@ -1,9 +1,8 @@
 package org.jiumao.wechatMall.dao;
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-import org.jiumao.wechatMall.common.Assist;
 import org.jiumao.wechatMall.entity.User;
+import java.util.List;
+import org.jiumao.wechatMall.common.Assist;
+import org.apache.ibatis.annotations.Param;
 public interface UserDao{
 	/**
 	 * 获得User数据的总行数,可以通过辅助工具Assist进行条件查询,如果没有条件则传入null

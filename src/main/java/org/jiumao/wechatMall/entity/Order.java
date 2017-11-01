@@ -1,7 +1,7 @@
 package org.jiumao.wechatMall.entity;
 public class Order {
     private Object id;
-    private Integer userId;//订单也是用户级别的
+    private Long userId;//订单也是用户级别的
     private Long orderId;//订单号，应当有程序生成唯一且不可变
     private java.util.Date creatTime;//创建时间，用于报表统计
     private Integer status;//订单状态，取消，未付款，正在派单，送达，确认收货等
@@ -11,7 +11,7 @@ public class Order {
     public Order() {
         super();
     }
-    public Order(Object id,Integer userId,Long orderId,java.util.Date creatTime,Integer status,Integer orderGoodId,Double totalPrice,Integer num) {
+    public Order(Object id,Long userId,Long orderId,java.util.Date creatTime,Integer status,Integer orderGoodId,Double totalPrice,Integer num) {
         super();
         this.id = id;
         this.userId = userId;
@@ -30,11 +30,11 @@ public class Order {
         this.id = id;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

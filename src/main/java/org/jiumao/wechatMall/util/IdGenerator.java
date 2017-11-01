@@ -1,62 +1,73 @@
 package org.jiumao.wechatMall.util;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.jiumao.wechatMall.common.constant.LoggerName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.primitives.Longs;
 
 /**
  * 生成唯一编号
+ * <p>
+ * 非分布式生成器，多机器会冲突。后续可以扩展为高可用RPC服务
  * 
  * @author ppf@jiumao.org
  * @date 2017年10月25日
  */
 public final class IdGenerator {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(LoggerName.Store);
 
-	private static final AtomicLong UserId = new AtomicLong(19910315);
-	private static final AtomicLong CardId = new AtomicLong(1000 * 1000 * 1000);
+	private static final long BEGIN_USERID = 19910315L;
+	private static final long BEGIN_CARDID = 1000 * 1000 * 1000L;
+	private static final long FILE_SIZE = 32L;
+	private static final AtomicLong UserId = new AtomicLong(BEGIN_USERID);
+	private static final AtomicLong CardId = new AtomicLong(BEGIN_CARDID);
+
 	private static final String ProjectPath = System.getProperty("user.dir");
-	private static final FileInputStream in;
-	private static final FileOutputStream out;
+	private static FileChannel channel;
+	private static MappedByteBuffer buff;
+	private static RandomAccessFile raf;
 
 	static {
-		// 协议 8byte userID + 8byte cardID + ...
+		// 协议32字节(可扩展)： 
+		// 8byte 起始userID + 8byte 起始cardID + 8byte 当前userID + 8byte 当前cardID
 		File abort = new File(ProjectPath + File.separator + "abort");
 		try {
 			if (!abort.exists()) {
 				abort.createNewFile();
-				out = new FileOutputStream(abort);
+				init(abort);
 				backup();
-				in = new FileInputStream(abort);
 			}else {
-				in = new FileInputStream(abort);
+				init(abort);
 				recovery();
-				out = new FileOutputStream(abort);
-			}
-			backup();
+			} 
 		} catch (IOException e) {
 			throw new Error(e);
 		}
-		
+
+	}
+
+	private static void init(File abort) throws FileNotFoundException,
+			IOException {
+		raf = new RandomAccessFile(abort, "rw");
+		raf.setLength(FILE_SIZE);
+		channel = raf.getChannel();
+		buff = channel
+				.map(FileChannel.MapMode.READ_WRITE, 0, FILE_SIZE);
 	}
 
 	private final static long randomId(int seed) {
 		int random = (int) (Math.random() * (seed));
 		long now = System.currentTimeMillis();
 		return now * seed + random;
-	}
-
-	public static void main(String[] args) {
-		System.out.println(orderId());
 	}
 
 	public static void setUserId(long fromWhere) {
@@ -85,13 +96,11 @@ public final class IdGenerator {
 	 * @throws IOException
 	 */
 	public static void backup() {
-		try {
-			out.write(Longs.toByteArray(UserId.get()));
-			out.write(Longs.toByteArray(CardId.get()));
-			out.flush();
-		} catch (IOException e) {
-			log.error("UserId:"+UserId.get()+"|CardId:"+CardId.get(),e.getMessage());
-		}
+		buff.putLong(0, BEGIN_USERID);
+		buff.putLong(8, BEGIN_CARDID);
+		buff.putLong(16, UserId.get());
+		buff.putLong(24, CardId.get());
+		buff.force();
 	}
 
 	/**
@@ -99,26 +108,18 @@ public final class IdGenerator {
 	 * 
 	 * @throws IOException
 	 */
-	public static void recovery() throws IOException {
-		byte[] longId = new byte[8];
-		if (in.available() > 15) {
-			long newValue = 0L;
-			in.read(longId);
-			newValue = Longs.fromByteArray(longId);
-			UserId.set(newValue);
-			in.read(longId);
-			newValue = Longs.fromByteArray(longId);
-			CardId.set(newValue);
-		}
+	public static void recovery() {
+		UserId.set(buff.getLong(16));
+		CardId.set(buff.getLong(24));
 	}
-	
+
 	@Override
 	protected void finalize() throws Throwable {
-		try{
-			in.close();
-			out.close();
-		}catch(Throwable e){
-			log.error("Abort file close failure",e.getMessage());
+		try {
+			channel.close();
+			raf.close();
+		} catch (Throwable e) {
+			log.error("Abort file close failure", e.getMessage());
 		}
 	}
 

@@ -2,35 +2,22 @@ package org.jiumao.wechatMall;
 
 import static org.junit.Assert.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
 import org.jiumao.wechatMall.common.domain.Gender;
-import org.jiumao.wechatMall.dao.UserDao;
 import org.jiumao.wechatMall.entity.User;
-import org.jiumao.wechatMall.service.UserService;
-import org.jiumao.wechatMall.service.Impl.UserServiceImpl;
-import org.jiumao.wechatMall.util.IdGenerator;
-import org.jiumao.wechatMall.util.JsonUtil;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class APITest {
 
 	String url = "http://localhost:8080/wechat-mall/admin/index";
-	User u = new User(2, IdGenerator.getUserId(), 18067677912L,
-			"18010065474", "ppf@jiumao.org", Gender.MAN.toString(),
-			"China,Beijing,Chaoyang", "Pengpeng", "q294881866");
+	User u = new User(2, 18067677912L, "18010065474", "ppf@jiumao.org",
+			Gender.MAN.toString(), "China,Beijing,Chaoyang", "Pengpeng",
+			"q294881866", null, null);
+
 	@Test
 	public void postTest() throws Exception {
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("userName").append("=").append(u.getUserName()).append("&")
+		sb.append("userName").append("=").append(u.getUsername()).append("&")
 				.append("password").append("=").append(u.getPassword())
 				.append("&").append("phone").append("=").append(u.getPhone())
 				.append("&").append("nick").append("=").append(u.getNick())
@@ -42,7 +29,13 @@ public class APITest {
 
 		System.out.println(res);
 	}
-	
-	
+
+	@Test
+	public void oAuth2Test() throws Exception {
+		url = "http://localhost:8080/wechat-mall/oauth/token";
+		String params = "client_id=mobile-client&client_secret=mobile&grant_type=password&username=q294881866&password=294881866";
+		String res = HttpUtil.sendPost(url, params);
+		System.out.println(res);
+	}
 
 }
