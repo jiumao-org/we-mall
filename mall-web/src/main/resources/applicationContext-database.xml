@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="org.jiumao.wechatMall" />
+	<!--加载配置文件 也可以在参数.xml文件里统一加载 -->
+	<context:property-placeholder location="classpath*:*.properties" />
+	<bean id="DataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="${main.db.jdbcUrl}" />
+		<property name="username" value="${main.db.username}" />
+		<property name="password" value="${main.db.password}" />
+
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${main.db.initialSize}" />
+		<property name="minIdle" value="${main.db.minIdle}" />
+		<property name="maxActive" value="${main.db.maxActive}" />
+
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="${main.db.maxWait}" />
+
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000000" />
+
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+
+		<property name="validationQuery" value="SELECT 1" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="true" />
+		<property name="testOnReturn" value="true" />
+
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<!--property name="poolPreparedStatements" value="true"/> <property name="maxPoolPreparedStatementPerConnectionSize" 
+			value="20"/ -->
+
+		<!-- 配置监控统计拦截的filters。状态统计：stat，日常记录：slf4j -->
+		<!--<property name="filters" value="stat,slf4j" /> -->
+	</bean>
+
+
+	<!--********************************************************************************************************************************* -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"
+		scope="prototype">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+
+	<!--************************************************************************************************************************************** -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="DataSource" />
+		<property name="mapperLocations">
+			<array>
+				<value>classpath:mapper/*Mapper.xml</value>
+			</array>
+		</property>
+	</bean>
+
+
+	<!--************************************************************************************************************************************** -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="org.jiumao.wechatMall.**.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+
+</beans>

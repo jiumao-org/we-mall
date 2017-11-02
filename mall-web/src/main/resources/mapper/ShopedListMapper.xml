@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jiumao.wechatMall.dao.ShopedListDao">
+    <!-- ShopedList的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_ShopedList_Map" type="org.jiumao.wechatMall.entity.ShopedList">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="order_id" property="orderId" />
+        <result column="status" property="status" />
+    </resultMap>
+
+	   <!-- Assist用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
+    <sql id="Assist">
+        <where>
+            <foreach collection="require" item="req" separator=" ">
+                ${req.require} #{req.value} <if test="req.suffix != null"> ${req.suffix}</if>
+            </foreach>
+        </where>
+    </sql>
+
+	   <!-- updateAssist用于更新数据的使用它拓展自Assist,用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
+    <sql id="updateAssist">
+        <where>
+            <foreach collection="assist.require" item="req" separator=" ">
+                ${req.require} #{req.value} <if test="req.suffix != null"> ${req.suffix}</if>
+            </foreach>
+        </where>
+    </sql>
+
+    <!-- 数据库中表名为:shoped_list的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="shoped_list_Column">
+        shoped_list.id as id
+        ,shoped_list.user_id as user_id
+        ,shoped_list.order_id as order_id
+        ,shoped_list.status as status
+    </sql>
+
+    <!--获得类名为:ShopedList对应的数据库表的数据总行数 -->
+    <select id="getShopedListRowCount" parameterType="org.jiumao.wechatMall.common.Assist" resultType="java.lang.Long">
+        select count(id) from shoped_list
+        <if test="require!=null"><include refid="Assist" /></if>
+    </select>
+    <!-- 获得类名为:ShopedList对应数据库中表的数据集合 -->
+    <select id="selectShopedList" parameterType="org.jiumao.wechatMall.common.Assist"  resultMap="result_ShopedList_Map">
+        select  <if test="distinct !=null">${distinct}</if>
+        <choose>
+            <when test="resultColumn!=null">${resultColumn}</when>
+            <otherwise>
+        <include refid="shoped_list_Column" /> 
+            </otherwise>
+        </choose>
+        from shoped_list
+        <choose>
+            <when test="rowSize ==null">
+                <if test="require!=null">
+                    <include refid="Assist" />
+                </if>
+                <if test="order !=null">${order}</if>
+            </when>
+            <otherwise>
+                inner join
+                (
+                SELECT id as primary_key FROM shoped_list
+                <if test="require!=null">
+                    <include refid="Assist" />
+                </if>
+                <if test="order !=null">${order}</if>
+                <choose>
+                    <when test="startRow !=null and rowSize !=null">LIMIT #{startRow},#{rowSize} </when>
+                    <when test="rowSize !=null">LIMIT #{rowSize}</when>
+                 </choose>
+                 ) as tmp
+                 on tmp.primary_key=shoped_list.id
+            </otherwise>
+        </choose>
+    </select> 
+
+    <!-- 获得一个ShopedList对象,以参数ShopedList对象中不为空的属性作为条件进行查询-->
+    <select id="selectShopedListByObj" parameterType="org.jiumao.wechatMall.entity.ShopedList" resultMap="result_ShopedList_Map">
+        select 
+            <include refid="shoped_list_Column" /> 
+        from shoped_list
+        <where>
+            <if test="status != null "> and shoped_list.status = #{status}</if>
+            <if test="orderId != null "> and shoped_list.order_id = #{orderId}</if>
+            <if test="userId != null "> and shoped_list.user_id = #{userId}</if>
+            <if test="id != null "> and shoped_list.id = #{id}</if>
+        </where>
+    </select> 
+
+    <!-- 通过ShopedList的id获得对应数据库中表的数据对象-->
+    <select id="selectShopedListById" parameterType="java.lang.Object" resultMap="result_ShopedList_Map">
+        select 
+            <include refid="shoped_list_Column" /> 
+        from shoped_list
+        where shoped_list.id = #{id}
+    </select> 
+
+    <!-- 将ShopedList插入到对应数据库的表中,包括属性值为null的数据-->
+
+    <insert id="insertShopedList" parameterType="org.jiumao.wechatMall.entity.ShopedList">
+        insert into shoped_list(id,user_id,order_id,status) 
+        values(#{id},#{userId},#{orderId},#{status})
+    </insert>
+
+    <!-- 将ShopedList中属性值不为null的数据,插入到对应数据库的表中-->
+    <insert id="insertNonEmptyShopedList" parameterType="org.jiumao.wechatMall.entity.ShopedList">
+        insert into shoped_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id},</if>
+            <if test="userId != null"> #{userId},</if>
+            <if test="orderId != null"> #{orderId},</if>
+            <if test="status != null"> #{status},</if>
+        </trim>
+    </insert>
+
+    <!-- 通过ShopedList的id将数据库表中对应的数据删除-->
+    <delete id="deleteShopedListById" parameterType="java.lang.Object">
+        delete from shoped_list
+        where id = #{id}
+    </delete>
+
+    <!-- 通过辅助工具Assist中的条件将ShopedList对应的数据库表的数据删除-->
+    <delete id="deleteShopedList" parameterType="org.jiumao.wechatMall.common.Assist">
+        delete from shoped_list
+        <if test="require!=null"><include refid="Assist" /></if>
+    </delete>
+
+    <!-- 通过ShopedList的id将ShopedList的数据更新到数据库中对应的表,包括值null的数据-->
+    <update id="updateShopedListById" parameterType="org.jiumao.wechatMall.entity.ShopedList">
+        update shoped_list set
+            user_id=#{userId}
+            ,order_id=#{orderId}
+            ,status=#{status}
+        where id=#{id}
+    </update>
+
+    <!-- 通过ShopedList的id将ShopedList中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyShopedListById" parameterType="org.jiumao.wechatMall.entity.ShopedList">
+        update shoped_list
+        <set>
+            <if test="userId != null">
+                user_id=#{userId},
+            </if>
+            <if test="orderId != null">
+                order_id=#{orderId},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!-- 通过辅助工具Assist中的条件将ShopedList中的数据更新到数据库对应的表中,包括值为null的数据-->
+    <update id="updateShopedList" parameterType="map">
+        update shoped_list
+        <set>
+                id=#{enti.id},
+                user_id=#{enti.userId},
+                order_id=#{enti.orderId},
+                status=#{enti.status},
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+    <!-- 通过辅助工具Assist中的条件将ShopedList中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyShopedList" parameterType="map">
+        update shoped_list
+        <set>
+            <if test="enti.id != null">
+                id=#{enti.id},
+            </if>
+            <if test="enti.userId != null">
+                user_id=#{enti.userId},
+            </if>
+            <if test="enti.orderId != null">
+                order_id=#{enti.orderId},
+            </if>
+            <if test="enti.status != null">
+                status=#{enti.status},
+            </if>
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+</mapper>
