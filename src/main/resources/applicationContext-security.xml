@@ -18,7 +18,7 @@
 		<custom-filter position="BASIC_AUTH_FILTER" ref="basicAuth" />
 		<custom-filter position="FORM_LOGIN_FILTER" ref="tokenLoginFilter" />
 		<logout logout-success-url="/admin/index" />
-		<anonymous />
+		<anonymous enabled="true" />
 		<access-denied-handler ref="oauth2AccessDeniedHandler" />
 		<csrf disabled="true" />
 	</http>
