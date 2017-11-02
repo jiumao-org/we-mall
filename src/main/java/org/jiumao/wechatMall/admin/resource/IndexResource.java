@@ -60,8 +60,6 @@ public class IndexResource {
 	@POST
 	@Path("register")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Produces(MediaType.APPLICATION_JSON)
-	@AuthAnnotation
 	public String register(@FormParam("userName") String userName,
 			@FormParam("password") String password,
 			@FormParam("phone") Long phone, @FormParam("email") String email,

@@ -7,29 +7,35 @@
                         http://www.springframework.org/schema/security
                         http://www.springframework.org/schema/security/spring-security-4.2.xsd http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2-2.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
 
+
 	<http pattern="/oauth/rest_token" security="none" />
 	<http pattern="/oauth/check_token" security="none" />
 	<!-- /oauth/token 是oauth2登陆验证请求的url 用于获取access_token ,默认的生存时间是43200秒，即12小时 -->
 	<http pattern="/oauth/token" create-session="stateless"
 		authentication-manager-ref="oauth2AuthenticationManager"
 		entry-point-ref="oauth2AuthenticationEntryPoint" use-expressions="false">
-		<intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY" />
+		<anonymous enabled="false" />
+		<http-basic entry-point-ref="oauth2AuthenticationEntryPoint" />
 
-		<custom-filter position="BASIC_AUTH_FILTER" ref="basicAuth" />
-		<custom-filter position="FORM_LOGIN_FILTER" ref="tokenLoginFilter" />
-		<logout logout-success-url="/admin/index" />
-		<anonymous />
+		<custom-filter ref="clientCredentialsTokenEndpointFilter"
+			before="BASIC_AUTH_FILTER" />
 		<access-denied-handler ref="oauth2AccessDeniedHandler" />
 		<csrf disabled="true" />
 	</http>
 
-	<beans:bean id="basicAuth"
-		class="org.springframework.security.web.authentication.www.BasicAuthenticationFilter">
-		<beans:constructor-arg index="0"
-			ref="userAuthenticationManager" />
-		<beans:constructor-arg index="1"
-			ref="oauth2AuthenticationEntryPoint" />
-	</beans:bean>
+
+
+	<!-- 可以访问的角色名称，如果需要拦截，需要实现UserDetails接口，实现getAuthorities（）方法 -->
+
+
+	<http auto-config="true">
+		<form-login login-page="/" default-target-url="/"
+			authentication-failure-url="/?login=error" />
+		<custom-filter before="REMEMBER_ME_FILTER" ref="tokenLoginFilter" />
+		<logout logout-success-url="/" />
+	</http>
+
 
 	<!--oauth2 的server所能支持的请求类型 -->
 	<oauth2:authorization-server
@@ -43,20 +49,18 @@
 		<oauth2:password authentication-manager-ref="userAuthenticationManager" />
 	</oauth2:authorization-server>
 
+
+
 	<!-- 验证的权限控制 -->
-	<authentication-manager alias="authenticationManager"
-		id="oauth2AuthenticationManager">
+	<authentication-manager id="oauth2AuthenticationManager">
 		<authentication-provider user-service-ref="oauth2ClientDetailsUserService">
 		</authentication-provider>
 	</authentication-manager>
-
-
 	<!-- 密码验证的权限控制 -->
 	<authentication-manager id="userAuthenticationManager">
-		<authentication-provider ref="userLoginProvider">
+		<authentication-provider ref="userAuthService">
 		</authentication-provider>
 	</authentication-manager>
-
 
 	<!--token在服务器存储的方式 InMemoryTokenStore ：保存在内存 ；JdbcTokenStore : 保存在数据库中 -->
 	<beans:bean id="tokenStore"
@@ -98,7 +102,7 @@
 		class="org.springframework.security.oauth2.provider.approval.DefaultUserApprovalHandler" />
 	<!--处理访问控制 -->
 	<beans:bean id="oauth2AccessDecisionManager"
-		class="org.springframework.security.access.vote.AffirmativeBased">
+		class="org.springframework.security.access.vote.UnanimousBased">
 		<beans:constructor-arg>
 			<beans:list>
 				<beans:bean

@@ -23,8 +23,8 @@ import org.springframework.stereotype.Service;
  * @author ppf@jiumao.org
  * @date 2017年10月31日
  */
-@Service("userAuthService")
-public class UserAuthService implements AuthenticationProvider {
+@Service("userLoginProvider")
+public class UserLoginProvider implements AuthenticationProvider {
 
 	@Resource
 	UserService userService;

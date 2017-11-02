@@ -2,6 +2,7 @@ package org.jiumao.wechatMall.common.auth.oAuth2;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -46,27 +47,29 @@ public class TokenLoginFilter extends GenericFilterBean implements ApplicationEv
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+        String grantType = request.getParameter("grant_type");
+        if (!"password".equals(grantType)) {
             chain.doFilter(request, response);
             return;
         }
-        String grantType = request.getParameter("grant_type");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        if ("password".equals(grantType)) {
-            chain.doFilter(request, response);
-            UsernamePasswordAuthenticationToken loginToken =
-                    new UsernamePasswordAuthenticationToken(username, password, null);
+        if (null == username)
+            username = "";
+        if (null == password)
+            password = "";
+        chain.doFilter(request, response);
+        UsernamePasswordAuthenticationToken loginToken =
+                new UsernamePasswordAuthenticationToken(username.trim(), password.trim(), null);
 
-            loginToken.setDetails(authenticationDetailsSource.buildDetails(request));
-            Authentication auth = authenticationManager.authenticate(loginToken);
-            SecurityContextHolder.getContext().setAuthentication(auth);
+        loginToken.setDetails(authenticationDetailsSource.buildDetails(request));
+        Authentication auth = authenticationManager.authenticate(loginToken);
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
-            onSuccessfulAuthentication((HttpServletRequest) request, (HttpServletResponse) response, auth);
+        onSuccessfulAuthentication((HttpServletRequest) request, (HttpServletResponse) response, auth);
 
-            if (eventPublisher != null) {
-                eventPublisher.publishEvent(new InteractiveAuthenticationSuccessEvent(auth, this.getClass()));
-            }
+        if (eventPublisher != null) {
+            eventPublisher.publishEvent(new InteractiveAuthenticationSuccessEvent(auth, this.getClass()));
         }
         chain.doFilter(request, response);
     }

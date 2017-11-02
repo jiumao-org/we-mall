@@ -18,9 +18,8 @@
 		<custom-filter position="BASIC_AUTH_FILTER" ref="basicAuth" />
 		<custom-filter position="FORM_LOGIN_FILTER" ref="tokenLoginFilter" />
 		<logout logout-success-url="/admin/index" />
-		<anonymous />
 		<access-denied-handler ref="oauth2AccessDeniedHandler" />
-		<csrf disabled="true" />
+		<!-- <csrf disabled="true" /> -->
 	</http>
 
 	<beans:bean id="basicAuth"
@@ -98,7 +97,7 @@
 		class="org.springframework.security.oauth2.provider.approval.DefaultUserApprovalHandler" />
 	<!--处理访问控制 -->
 	<beans:bean id="oauth2AccessDecisionManager"
-		class="org.springframework.security.access.vote.AffirmativeBased">
+		class="org.springframework.security.access.vote.UnanimousBased">
 		<beans:constructor-arg>
 			<beans:list>
 				<beans:bean

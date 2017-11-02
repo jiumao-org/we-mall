@@ -37,5 +37,13 @@ public class APITest {
 		String res = HttpUtil.sendPost(url, params);
 		System.out.println(res);
 	}
+	
+	@Test
+    public void authTest() throws Exception {
+        url = "http://localhost:8080/spring-oauth-server/oauth/token";
+        String params="client_id=6361b08fdea6400f93b2eccda8936b32&client_secret=i4KXewMI0u6i8CFEZo10mB2rGzQRXrIv&grant_type=password&scope=read&username=mobile&password=mobile";
+        String res = HttpUtil.sendPost(url, params);
+        System.out.println(res);
+    }
 
 }
