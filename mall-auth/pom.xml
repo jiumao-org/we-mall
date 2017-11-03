@@ -8,9 +8,9 @@
     <version>0.1.0-SNAPSHOT</version>
   </parent>
   <groupId>org.jiumao</groupId>
-  <artifactId>mall-OAuth2</artifactId>
+  <artifactId>mall-auth</artifactId>
   <version>0.1.0-SNAPSHOT</version>
-  <name>mall-OAuth2</name>
+  <name>mall-auth</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

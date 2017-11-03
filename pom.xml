@@ -292,7 +292,7 @@
     <module>mall-cache</module>
     <module>mall-api</module>
     <module>mall-db</module>
-    <module>mall-OAuth2</module>
+    <module>mall-auth</module>
     <module>mall-common</module>
   </modules>
 </project>
