@@ -7,6 +7,7 @@
 	<import resource="applicationContext-database.xml" />
 	<import resource="applicationContext-security.xml" />
 	<import resource="applicationContext-cache.xml" />
-
-
+	<context:component-scan base-package="org.jiumao.mall" />
+	<context:component-scan base-package="org.jiumao.api" />
+	<context:component-scan base-package="org.jiumao.wechatMall" />
 </beans>

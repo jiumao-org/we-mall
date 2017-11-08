@@ -14,8 +14,8 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.FeatureContext;
 import javax.ws.rs.ext.Provider;
 
-import org.jiumao.wechatMall.common.auth.AuthAnnotation;
-import org.jiumao.wechatMall.common.auth.AuthorizationFilter;
+import org.jiumao.mall.auth.AuthAnnotation;
+import org.jiumao.mall.auth.AuthorizationFilter;
 
 /**
  * 登陆认证服务
