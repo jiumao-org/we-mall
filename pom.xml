@@ -289,7 +289,7 @@
 	</build>
   <modules>
     <module>mall-web</module>
-    <module>mall-cache</module>
+    <module>mall-service</module>
     <module>mall-api</module>
     <module>mall-db</module>
     <module>mall-auth</module>

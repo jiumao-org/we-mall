@@ -12,11 +12,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.jiumao.wechatMall.common.auth.AuthAnnotation;
-import org.jiumao.wechatMall.common.constant.LoggerName;
+import org.jiumao.common.constants.LoggerName;
+import org.jiumao.common.utils.JsonUtil;
+import org.jiumao.mall.auth.AuthAnnotation;
 import org.jiumao.wechatMall.entity.User;
 import org.jiumao.wechatMall.service.UserService;
-import org.jiumao.wechatMall.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
