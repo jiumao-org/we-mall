@@ -2,7 +2,7 @@ package org.jiumao.wechatMall;
 
 import static org.junit.Assert.*;
 
-import org.jiumao.wechatMall.util.IdGenerator;
+import org.jiumao.common.utils.IdGenerator;
 import org.junit.Test;
 
 public class ModuleTest {

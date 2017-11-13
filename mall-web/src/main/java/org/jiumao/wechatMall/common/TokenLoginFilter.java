@@ -1,4 +1,4 @@
-package org.jiumao.mall.OAuth2;
+package org.jiumao.wechatMall.common;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 
-@Component
+//@Component
 public class TokenLoginFilter extends GenericFilterBean implements ApplicationEventPublisherAware {
 
     @Autowired
