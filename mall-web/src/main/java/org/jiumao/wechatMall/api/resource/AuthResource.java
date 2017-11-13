@@ -14,8 +14,8 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jiumao.common.AsynHttp.AsynHttpClient;
+import org.jiumao.common.AsynHttp.AsynHttps;
 import org.jiumao.common.AsynHttp.DoNothingListener;
-import org.jiumao.common.constants.AsynHttps;
 import org.jiumao.common.constants.LoggerName;
 import org.jiumao.common.domain.ErrorCode;
 import org.jiumao.common.utils.JsonUtil;

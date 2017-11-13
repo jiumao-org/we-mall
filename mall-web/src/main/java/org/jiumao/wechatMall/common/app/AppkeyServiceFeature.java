@@ -9,10 +9,10 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.FeatureContext;
 import javax.ws.rs.ext.Provider;
 
-import org.jiumao.mall.auth.AuthAnnotation;
+import org.jiumao.mall.auth.AppkeyAnnotation;
 
 @Provider
-public class AuthServiceFeature implements DynamicFeature {
+public class AppkeyServiceFeature implements DynamicFeature {
 
     @Override
     public void configure(ResourceInfo resourceInfo, FeatureContext context) {
@@ -20,9 +20,9 @@ public class AuthServiceFeature implements DynamicFeature {
         List<Annotation> authzSpecs = new ArrayList<>();
 
         Annotation classAuthzSpec =
-            resourceInfo.getResourceClass().getAnnotation(AuthAnnotation.class);
+            resourceInfo.getResourceClass().getAnnotation(AppkeyAnnotation.class);
         Annotation methodAuthzSpec =
-            resourceInfo.getResourceMethod().getAnnotation(AuthAnnotation.class);
+            resourceInfo.getResourceMethod().getAnnotation(AppkeyAnnotation.class);
 
         if (classAuthzSpec != null)
             authzSpecs.add(classAuthzSpec);
@@ -30,8 +30,7 @@ public class AuthServiceFeature implements DynamicFeature {
             authzSpecs.add(methodAuthzSpec);
 
         if (!authzSpecs.isEmpty()) {
-            // 需要拦截的api
-            context.register(AuthorizationFilter.class);
+            context.register(AppkeyFilter.class);
         }
     }
 

@@ -1,8 +1,7 @@
-package org.jiumao.common.constants;
+package org.jiumao.common.AsynHttp;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.concurrent.FutureCallback;
-import org.jiumao.common.AsynHttp.DoNothingListener;
 
 public final class AsynHttps {
     
