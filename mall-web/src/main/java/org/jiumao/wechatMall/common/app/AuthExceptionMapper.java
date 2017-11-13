@@ -20,8 +20,7 @@ public class AuthExceptionMapper implements ExceptionMapper<AuthException> {
 
 	@Override
 	public Response toResponse(AuthException exception) {
-		// TODO Auto-generated method stub
-		return null;
+		return Response.ok(exception.getResponse()).build();
 	}
 
 }
