@@ -1,5 +1,7 @@
 package org.jiumao.common.domain;
 
+import org.jiumao.common.utils.JsonUtil;
+
 /**
  * 接口返回消息格式
  * 
@@ -21,7 +23,12 @@ public class Msg {
 
     @Override
     public String toString() {
-        return "{code:" + this.code + ",msg:" + this.msg + "}";
+        return "{\"code\":" + this.code + ",\"msg\":\"" + this.msg + "\"}";
+    }
+
+
+    public static void main(String[] args) {
+        System.err.println(new Msg(401, "Invalid token."));
     }
 
 }
