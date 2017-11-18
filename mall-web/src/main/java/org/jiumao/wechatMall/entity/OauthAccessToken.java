@@ -1,6 +1,15 @@
 package org.jiumao.wechatMall.entity;
+
+import org.jiumao.mall.db.DateUtils;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "OauthAccessToken")
 public class OauthAccessToken {
-    private java.util.Date createTime;
+    @CreatedDate
+    private java.util.Date createTime = DateUtils.now();
+    @Id
     private String tokenId;
     private String token;
     private String authenticationId;
@@ -11,7 +20,22 @@ public class OauthAccessToken {
     public OauthAccessToken() {
         super();
     }
-    public OauthAccessToken(java.util.Date createTime,String tokenId,String token,String authenticationId,String userName,String clientId,String authentication,String refreshToken) {
+
+    @Override
+    public String toString() {
+        return "OauthAccessToken{" +
+                "createTime=" + createTime +
+                ", tokenId='" + tokenId + '\'' +
+                ", token='" + token + '\'' +
+                ", authenticationId='" + authenticationId + '\'' +
+                ", userName='" + userName + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", authentication='" + authentication + '\'' +
+                ", refreshToken='" + refreshToken + '\'' +
+                '}';
+    }
+
+    public OauthAccessToken(java.util.Date createTime, String tokenId, String token, String authenticationId, String userName, String clientId, String authentication, String refreshToken) {
         super();
         this.createTime = createTime;
         this.tokenId = tokenId;

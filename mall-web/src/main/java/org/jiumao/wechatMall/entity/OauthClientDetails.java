@@ -1,109 +1,120 @@
 package org.jiumao.wechatMall.entity;
-public class OauthClientDetails {
+
+import org.apache.commons.lang3.StringUtils;
+import org.jiumao.mall.db.DateUtils;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.client.BaseClientDetails;
+
+import java.io.Serializable;
+import java.util.Date;
+
+@Document(collection = "OauthClientDetails")
+public class OauthClientDetails implements Serializable {
+    @Id
     private String clientId;
     private String resourceIds;
     private String clientSecret;
+
+    /**
+     * Available values: read,write
+     */
     private String scope;
-    private String authorizedGrantTypes;
+
+    /**
+     * grant types include
+     * "authorization_code", "password", "assertion", and "refresh_token".
+     * Default value is "authorization_code,refresh_token".
+     */
+    private String authorizedGrantTypes = "authorization_code,refresh_token";
+
+    /**
+     * The re-direct URI(s) established during registration (optional, comma separated).
+     */
     private String webServerRedirectUri;
+
+    /**
+     * Authorities that are granted to the client (comma-separated). Distinct from the authorities
+     * granted to the user on behalf of whom the client is acting.
+     * <p/>
+     * For example: ROLE_USER
+     */
     private String authorities;
+
+    /**
+     * The access token validity period in seconds (optional).
+     * If unspecified a global default will be applied by the token services.
+     * Unit: second
+     */
     private Integer accessTokenValidity;
-    private Integer refreshTokenValidity;
-    private String additionalInformation;
-    private java.util.Date createTime;
-    private Integer archived;
-    private Integer trusted;
-    private String autoapprove;
+
+    @Version
+    private Long version;
+    /**
+     * The refresh token validity period in seconds (optional).
+     * If unspecified a global default will  be applied by the token services.
+     * Unit: second
+     */
+    private Integer        refreshTokenValidity;
+    private String         additionalInformation;
+    @CreatedDate
+    private Date createTime = DateUtils.now();
+    private Integer        archived;
+    /**
+     * The client is trusted or not. If it is trust, will skip approve step
+     * default false.
+     */
+    private Integer        trusted;
+    private String         autoapprove;
     public OauthClientDetails() {
         super();
     }
-    public OauthClientDetails(String clientId,String resourceIds,String clientSecret,String scope,String authorizedGrantTypes,String webServerRedirectUri,String authorities,Integer accessTokenValidity,Integer refreshTokenValidity,String additionalInformation,java.util.Date createTime,Integer archived,Integer trusted,String autoapprove) {
-        super();
-        this.clientId = clientId;
-        this.resourceIds = resourceIds;
-        this.clientSecret = clientSecret;
-        this.scope = scope;
-        this.authorizedGrantTypes = authorizedGrantTypes;
-        this.webServerRedirectUri = webServerRedirectUri;
-        this.authorities = authorities;
-        this.accessTokenValidity = accessTokenValidity;
-        this.refreshTokenValidity = refreshTokenValidity;
-        this.additionalInformation = additionalInformation;
-        this.createTime = createTime;
-        this.archived = archived;
-        this.trusted = trusted;
-        this.autoapprove = autoapprove;
-    }
-    public String getClientId() {
-        return this.clientId;
+
+    public String clientId() {
+        return clientId;
     }
 
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
+    public String resourceIds() {
+        return resourceIds;
     }
 
-    public String getResourceIds() {
-        return this.resourceIds;
+
+    public String clientSecret() {
+        return clientSecret;
     }
 
-    public void setResourceIds(String resourceIds) {
-        this.resourceIds = resourceIds;
+
+    public String scope() {
+        return scope;
     }
 
-    public String getClientSecret() {
-        return this.clientSecret;
-    }
 
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
-    }
-
-    public String getScope() {
-        return this.scope;
-    }
-
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
-
-    public String getAuthorizedGrantTypes() {
-        return this.authorizedGrantTypes;
-    }
-
-    public void setAuthorizedGrantTypes(String authorizedGrantTypes) {
-        this.authorizedGrantTypes = authorizedGrantTypes;
+    public String authorizedGrantTypes() {
+        return authorizedGrantTypes;
     }
 
     public String getWebServerRedirectUri() {
-        return this.webServerRedirectUri;
+        return webServerRedirectUri;
     }
 
     public void setWebServerRedirectUri(String webServerRedirectUri) {
         this.webServerRedirectUri = webServerRedirectUri;
     }
 
-    public String getAuthorities() {
-        return this.authorities;
+    public String authorities() {
+        return authorities;
     }
 
-    public void setAuthorities(String authorities) {
-        this.authorities = authorities;
+
+    public Integer accessTokenValidity() {
+        return accessTokenValidity;
     }
 
-    public Integer getAccessTokenValidity() {
-        return this.accessTokenValidity;
-    }
-
-    public void setAccessTokenValidity(Integer accessTokenValidity) {
-        this.accessTokenValidity = accessTokenValidity;
-    }
-
-    public Integer getRefreshTokenValidity() {
-        return this.refreshTokenValidity;
-    }
-
-    public void setRefreshTokenValidity(Integer refreshTokenValidity) {
-        this.refreshTokenValidity = refreshTokenValidity;
+    public Integer refreshTokenValidity() {
+        return refreshTokenValidity;
     }
 
     public String getAdditionalInformation() {
@@ -114,36 +125,115 @@ public class OauthClientDetails {
         this.additionalInformation = additionalInformation;
     }
 
-    public java.util.Date getCreateTime() {
-        return this.createTime;
+    public Date createTime() {
+        return createTime;
     }
 
-    public void setCreateTime(java.util.Date createTime) {
-        this.createTime = createTime;
+    public Integer archived() {
+        return archived;
     }
 
-    public Integer getArchived() {
-        return this.archived;
+
+    public Integer trusted() {
+        return trusted;
     }
 
-    public void setArchived(Integer archived) {
-        this.archived = archived;
+    public String autoapprove() {
+        return autoapprove;
     }
 
-    public Integer getTrusted() {
-        return this.trusted;
+
+    public ClientDetails toClientDetails() {
+        BaseClientDetails clientDetails = new BaseClientDetails(clientId, resourceIds, scope, authorizedGrantTypes, authorities, webServerRedirectUri);
+        clientDetails.setClientSecret(clientSecret);
+
+        if (StringUtils.isNotEmpty(additionalInformation)) {
+            clientDetails.addAdditionalInformation("information", additionalInformation);
+        }
+        clientDetails.setAccessTokenValiditySeconds(accessTokenValidity);
+        clientDetails.setRefreshTokenValiditySeconds(refreshTokenValidity);
+
+        return clientDetails;
     }
 
-    public void setTrusted(Integer trusted) {
+    public OauthClientDetails clientId(String clientId) {
+        this.clientId = clientId;
+        return this;
+    }
+
+    public OauthClientDetails clientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+        return this;
+    }
+
+    public OauthClientDetails resourceIds(String resourceIds) {
+        this.resourceIds = resourceIds;
+        return this;
+    }
+
+    public OauthClientDetails authorizedGrantTypes(String authorizedGrantTypes) {
+        this.authorizedGrantTypes = authorizedGrantTypes;
+        return this;
+    }
+
+    public OauthClientDetails scope(String scope) {
+        this.scope = scope;
+        return this;
+    }
+
+    public OauthClientDetails webServerRedirectUri(String webServerRedirectUri) {
+        this.webServerRedirectUri = webServerRedirectUri;
+        return this;
+    }
+
+    public OauthClientDetails authorities(String authorities) {
+        this.authorities = authorities;
+        return this;
+    }
+
+    public OauthClientDetails accessTokenValidity(Integer accessTokenValidity) {
+        this.accessTokenValidity = accessTokenValidity;
+        return this;
+    }
+
+    public OauthClientDetails refreshTokenValidity(Integer refreshTokenValidity) {
+        this.refreshTokenValidity = refreshTokenValidity;
+        return this;
+    }
+
+    public OauthClientDetails trusted(Integer trusted) {
         this.trusted = trusted;
+        return this;
     }
 
-    public String getAutoapprove() {
-        return this.autoapprove;
+    public OauthClientDetails additionalInformation(String additionalInformation) {
+        this.additionalInformation = additionalInformation;
+        return this;
     }
 
-    public void setAutoapprove(String autoapprove) {
+    public OauthClientDetails autoapprove(String autoapprove) {
         this.autoapprove = autoapprove;
+        return  this;
     }
 
+    @Override
+    public String toString() {
+        return "OauthClientDetails{" +
+                "clientId='" + clientId + '\'' +
+                ", resourceIds='" + resourceIds + '\'' +
+                ", clientSecret='" + clientSecret + '\'' +
+                ", scope='" + scope + '\'' +
+                ", authorizedGrantTypes='" + authorizedGrantTypes + '\'' +
+                ", webServerRedirectUri='" + webServerRedirectUri + '\'' +
+                ", authorities='" + authorities + '\'' +
+                ", accessTokenValidity=" + accessTokenValidity +
+                ", version=" + version +
+                ", refreshTokenValidity=" + refreshTokenValidity +
+                ", additionalInformation='" + additionalInformation + '\'' +
+                ", createTime=" + createTime +
+                ", archived=" + archived +
+                ", trusted=" + trusted +
+                ", autoapprove='" + autoapprove + '\'' +
+                '}';
+    }
 }

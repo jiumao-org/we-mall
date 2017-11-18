@@ -28,7 +28,7 @@
 	</listener>
 
 	<listener>
-		<listener-class>org.jiumao.wechatMall.util.AbortFileListener</listener-class>
+		<listener-class>org.jiumao.common.utils.AbortFileListener</listener-class>
 	</listener>
 
 

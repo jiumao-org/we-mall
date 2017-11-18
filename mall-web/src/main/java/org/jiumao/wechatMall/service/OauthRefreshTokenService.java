@@ -44,37 +44,37 @@ public interface OauthRefreshTokenService{
 	 * @param id
 	 * @return
 	 */
-    int deleteOauthRefreshTokenById(Object id);
+	long deleteOauthRefreshTokenById(Object id);
 	/**
 	 * 通过辅助工具Assist的条件删除OauthRefreshToken
 	 * @param assist
 	 * @return
 	 */
-    int deleteOauthRefreshToken(Assist assist);
+	long deleteOauthRefreshToken(Assist assist);
 	/**
 	 * 通过OauthRefreshToken的id更新OauthRefreshToken中的数据,包括null值
 	 * @param enti
 	 * @return
 	 */
-    int updateOauthRefreshTokenById(OauthRefreshToken enti);
+	long updateOauthRefreshTokenById(OauthRefreshToken enti);
  	/**
 	 * 通过辅助工具Assist的条件更新OauthRefreshToken中的数据,包括null值
 	 * @param value
 	 * @param assist
 	 * @return
 	 */
-    int updateOauthRefreshToken(OauthRefreshToken value,  Assist assist);
+	long updateOauthRefreshToken(OauthRefreshToken value,  Assist assist);
 	/**
 	 * 通过OauthRefreshToken的id更新OauthRefreshToken中属性不为null的数据
 	 * @param enti
 	 * @return
 	 */
-    int updateNonEmptyOauthRefreshTokenById(OauthRefreshToken enti);
+	long updateNonEmptyOauthRefreshTokenById(OauthRefreshToken enti);
  	/**
 	 * 通过辅助工具Assist的条件更新OauthRefreshToken中属性不为null的数据
 	 * @param value
 	 * @param assist
 	 * @return
 	 */
-    int updateNonEmptyOauthRefreshToken(OauthRefreshToken value, Assist assist);
+	long updateNonEmptyOauthRefreshToken(OauthRefreshToken value, Assist assist);
 }

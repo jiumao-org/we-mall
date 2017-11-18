@@ -1,39 +1,65 @@
 package org.jiumao.wechatMall.entity;
-public class OauthCode {
-    private java.util.Date createTime;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.oauth2.common.util.SerializationUtils;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Date;
+
+@Document(collection = "OauthCode")
+public class OauthCode implements Serializable {
+
+    private static final long serialVersionUID = 2775272095671208572L;
+
+    @CreatedDate
+    private Date createTime;
+    @Id
     private String code;
-    private String authentication;
+    @Version
+    private Long version;
+
+    private byte[] authenticationBytes;
+
     public OauthCode() {
         super();
     }
-    public OauthCode(java.util.Date createTime,String code,String authentication) {
-        super();
-        this.createTime = createTime;
+
+    public String code() {
+        return code;
+    }
+
+    public OauthCode code(String code) {
         this.code = code;
-        this.authentication = authentication;
+        return this;
     }
-    public java.util.Date getCreateTime() {
-        return this.createTime;
-    }
-
-    public void setCreateTime(java.util.Date createTime) {
-        this.createTime = createTime;
+    public Date createTime() {
+        return createTime;
     }
 
-    public String getCode() {
-        return this.code;
+    public Long version() {
+        return version;
+    }
+    public OAuth2Authentication authentication() {
+        return SerializationUtils.deserialize(authenticationBytes);
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public OauthCode authentication(OAuth2Authentication authentication) {
+        this.authenticationBytes = SerializationUtils.serialize(authentication);
+        return this;
     }
 
-    public String getAuthentication() {
-        return this.authentication;
+    @Override
+    public String toString() {
+        return "OauthCode{" +
+                "createTime=" + createTime +
+                ", code='" + code + '\'' +
+                ", version=" + version +
+                ", authenticationBytes=" + Arrays.toString(authenticationBytes) +
+                '}';
     }
-
-    public void setAuthentication(String authentication) {
-        this.authentication = authentication;
-    }
-
 }

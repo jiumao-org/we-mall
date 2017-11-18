@@ -1,6 +1,15 @@
 package org.jiumao.wechatMall.entity;
+
+import org.jiumao.mall.db.DateUtils;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "OauthRefreshToken")
 public class OauthRefreshToken {
-    private java.util.Date createTime;
+    @CreatedDate
+    private java.util.Date createTime = DateUtils.now();
+    @Id
     private String tokenId;
     private String token;
     private String authentication;
@@ -46,4 +55,13 @@ public class OauthRefreshToken {
         this.authentication = authentication;
     }
 
+    @Override
+    public String toString() {
+        return "OauthRefreshToken{" +
+                "createTime=" + createTime +
+                ", tokenId='" + tokenId + '\'' +
+                ", token='" + token + '\'' +
+                ", authentication='" + authentication + '\'' +
+                '}';
+    }
 }

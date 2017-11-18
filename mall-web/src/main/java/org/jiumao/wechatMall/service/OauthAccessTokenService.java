@@ -44,37 +44,37 @@ public interface OauthAccessTokenService{
 	 * @param id
 	 * @return
 	 */
-    int deleteOauthAccessTokenById(Object id);
+	long deleteOauthAccessTokenById(Object id);
 	/**
 	 * 通过辅助工具Assist的条件删除OauthAccessToken
 	 * @param assist
 	 * @return
 	 */
-    int deleteOauthAccessToken(Assist assist);
+	long deleteOauthAccessToken(Assist assist);
 	/**
 	 * 通过OauthAccessToken的id更新OauthAccessToken中的数据,包括null值
 	 * @param enti
 	 * @return
 	 */
-    int updateOauthAccessTokenById(OauthAccessToken enti);
+	long updateOauthAccessTokenById(OauthAccessToken enti);
  	/**
 	 * 通过辅助工具Assist的条件更新OauthAccessToken中的数据,包括null值
 	 * @param value
 	 * @param assist
 	 * @return
 	 */
-    int updateOauthAccessToken(OauthAccessToken value,  Assist assist);
+	long updateOauthAccessToken(OauthAccessToken value,  Assist assist);
 	/**
 	 * 通过OauthAccessToken的id更新OauthAccessToken中属性不为null的数据
 	 * @param enti
 	 * @return
 	 */
-    int updateNonEmptyOauthAccessTokenById(OauthAccessToken enti);
+	long updateNonEmptyOauthAccessTokenById(OauthAccessToken enti);
  	/**
 	 * 通过辅助工具Assist的条件更新OauthAccessToken中属性不为null的数据
 	 * @param value
 	 * @param assist
 	 * @return
 	 */
-    int updateNonEmptyOauthAccessToken(OauthAccessToken value, Assist assist);
+	long updateNonEmptyOauthAccessToken(OauthAccessToken value, Assist assist);
 }
