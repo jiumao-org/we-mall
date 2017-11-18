@@ -35,27 +35,27 @@ public class OauthClientDetailsServiceImpl implements OauthClientDetailsService{
         return oauthClientDetailsDao.insertNonEmptyOauthClientDetails(value);
     }
     @Override
-    public int deleteOauthClientDetailsById(String id){
+    public long deleteOauthClientDetailsById(String id){
         return oauthClientDetailsDao.deleteOauthClientDetailsById(id);
     }
     @Override
-    public int deleteOauthClientDetails(Assist assist){
+    public long deleteOauthClientDetails(Assist assist){
         return oauthClientDetailsDao.deleteOauthClientDetails(assist);
     }
     @Override
-    public int updateOauthClientDetailsById(OauthClientDetails enti){
+    public long updateOauthClientDetailsById(OauthClientDetails enti){
         return oauthClientDetailsDao.updateOauthClientDetailsById(enti);
     }
     @Override
-    public int updateOauthClientDetails(OauthClientDetails value, Assist assist){
+    public long updateOauthClientDetails(OauthClientDetails value, Assist assist){
         return oauthClientDetailsDao.updateOauthClientDetails(value,assist);
     }
     @Override
-    public int updateNonEmptyOauthClientDetailsById(OauthClientDetails enti){
+    public long updateNonEmptyOauthClientDetailsById(OauthClientDetails enti){
         return oauthClientDetailsDao.updateNonEmptyOauthClientDetailsById(enti);
     }
     @Override
-    public int updateNonEmptyOauthClientDetails(OauthClientDetails value, Assist assist){
+    public long updateNonEmptyOauthClientDetails(OauthClientDetails value, Assist assist){
         return oauthClientDetailsDao.updateNonEmptyOauthClientDetails(value,assist);
     }
 

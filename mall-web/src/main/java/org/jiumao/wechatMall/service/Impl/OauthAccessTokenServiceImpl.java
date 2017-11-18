@@ -35,27 +35,27 @@ public class OauthAccessTokenServiceImpl implements OauthAccessTokenService{
         return oauthAccessTokenDao.insertNonEmptyOauthAccessToken(value);
     }
     @Override
-    public int deleteOauthAccessTokenById(Object id){
+    public long deleteOauthAccessTokenById(Object id){
         return oauthAccessTokenDao.deleteOauthAccessTokenById(id);
     }
     @Override
-    public int deleteOauthAccessToken(Assist assist){
+    public long deleteOauthAccessToken(Assist assist){
         return oauthAccessTokenDao.deleteOauthAccessToken(assist);
     }
     @Override
-    public int updateOauthAccessTokenById(OauthAccessToken enti){
+    public long updateOauthAccessTokenById(OauthAccessToken enti){
         return oauthAccessTokenDao.updateOauthAccessTokenById(enti);
     }
     @Override
-    public int updateOauthAccessToken(OauthAccessToken value, Assist assist){
+    public long updateOauthAccessToken(OauthAccessToken value, Assist assist){
         return oauthAccessTokenDao.updateOauthAccessToken(value,assist);
     }
     @Override
-    public int updateNonEmptyOauthAccessTokenById(OauthAccessToken enti){
+    public long updateNonEmptyOauthAccessTokenById(OauthAccessToken enti){
         return oauthAccessTokenDao.updateNonEmptyOauthAccessTokenById(enti);
     }
     @Override
-    public int updateNonEmptyOauthAccessToken(OauthAccessToken value, Assist assist){
+    public long updateNonEmptyOauthAccessToken(OauthAccessToken value, Assist assist){
         return oauthAccessTokenDao.updateNonEmptyOauthAccessToken(value,assist);
     }
 

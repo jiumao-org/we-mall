@@ -44,37 +44,37 @@ public interface OauthClientDetailsService{
 	 * @param id
 	 * @return
 	 */
-    int deleteOauthClientDetailsById(String id);
+	long deleteOauthClientDetailsById(String id);
 	/**
 	 * 通过辅助工具Assist的条件删除OauthClientDetails
 	 * @param assist
 	 * @return
 	 */
-    int deleteOauthClientDetails(Assist assist);
+	long deleteOauthClientDetails(Assist assist);
 	/**
 	 * 通过OauthClientDetails的id更新OauthClientDetails中的数据,包括null值
 	 * @param enti
 	 * @return
 	 */
-    int updateOauthClientDetailsById(OauthClientDetails enti);
+	long updateOauthClientDetailsById(OauthClientDetails enti);
  	/**
 	 * 通过辅助工具Assist的条件更新OauthClientDetails中的数据,包括null值
 	 * @param value
 	 * @param assist
 	 * @return
 	 */
-    int updateOauthClientDetails(OauthClientDetails value,  Assist assist);
+	long updateOauthClientDetails(OauthClientDetails value,  Assist assist);
 	/**
 	 * 通过OauthClientDetails的id更新OauthClientDetails中属性不为null的数据
 	 * @param enti
 	 * @return
 	 */
-    int updateNonEmptyOauthClientDetailsById(OauthClientDetails enti);
+	long updateNonEmptyOauthClientDetailsById(OauthClientDetails enti);
  	/**
 	 * 通过辅助工具Assist的条件更新OauthClientDetails中属性不为null的数据
 	 * @param value
 	 * @param assist
 	 * @return
 	 */
-    int updateNonEmptyOauthClientDetails(OauthClientDetails value, Assist assist);
+	long updateNonEmptyOauthClientDetails(OauthClientDetails value, Assist assist);
 }

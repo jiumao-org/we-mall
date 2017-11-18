@@ -35,27 +35,27 @@ public class OauthCodeServiceImpl implements OauthCodeService{
         return oauthCodeDao.insertNonEmptyOauthCode(value);
     }
     @Override
-    public int deleteOauthCodeById(Object id){
+    public long deleteOauthCodeById(Object id){
         return oauthCodeDao.deleteOauthCodeById(id);
     }
     @Override
-    public int deleteOauthCode(Assist assist){
+    public long deleteOauthCode(Assist assist){
         return oauthCodeDao.deleteOauthCode(assist);
     }
     @Override
-    public int updateOauthCodeById(OauthCode enti){
+    public long updateOauthCodeById(OauthCode enti){
         return oauthCodeDao.updateOauthCodeById(enti);
     }
     @Override
-    public int updateOauthCode(OauthCode value, Assist assist){
+    public long updateOauthCode(OauthCode value, Assist assist){
         return oauthCodeDao.updateOauthCode(value,assist);
     }
     @Override
-    public int updateNonEmptyOauthCodeById(OauthCode enti){
+    public long updateNonEmptyOauthCodeById(OauthCode enti){
         return oauthCodeDao.updateNonEmptyOauthCodeById(enti);
     }
     @Override
-    public int updateNonEmptyOauthCode(OauthCode value, Assist assist){
+    public long updateNonEmptyOauthCode(OauthCode value, Assist assist){
         return oauthCodeDao.updateNonEmptyOauthCode(value,assist);
     }
 

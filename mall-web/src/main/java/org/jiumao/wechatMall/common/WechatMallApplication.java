@@ -18,10 +18,10 @@ public class WechatMallApplication extends ResourceConfig {
 		String mall = "org.jiumao.wechatMall.mall.resource";
 		String api = "org.jiumao.wechatMall.api.resource";
 		String user = "org.jiumao.wechatMall.user.resource";
-		
 		packages(admin, mall, api, user);
-
+		//org.glassfish.jersey.server.spring.scope.RequestContextFilter 是 Spring filter 提供了 JAX-RS 和 Spring 请求属性之间的桥梁。
 		register(RequestContextFilter.class);
+		//org.glassfish.jersey.jackson.JacksonFeature,是一个 feature ，用 Jackson JSON 的提供者来解释 JSON。
 		register(JacksonFeature.class);
 		register(AuthServiceFeature.class);
 		register(LoggingResponseFilter.class);

@@ -45,37 +45,37 @@ public interface OauthCodeDao{
 	 * @param id
 	 * @return
 	 */
-    int deleteOauthCodeById(Object id);
+	long deleteOauthCodeById(Object id);
 	/**
 	 * 通过辅助工具Assist的条件删除OauthCode
 	 * @param assist
 	 * @return
 	 */
-    int deleteOauthCode(Assist assist);
+	long deleteOauthCode(Assist assist);
 	/**
 	 * 通过OauthCode的id更新OauthCode中的数据,包括null值
 	 * @param enti
 	 * @return
 	 */
-    int updateOauthCodeById(OauthCode enti);
+	long updateOauthCodeById(OauthCode enti);
  	/**
 	 * 通过辅助工具Assist的条件更新OauthCode中的数据,包括null值
 	 * @param value
 	 * @param assist
 	 * @return
 	 */
-    int updateOauthCode(@Param("enti") OauthCode value, @Param("assist") Assist assist);
+	long updateOauthCode(@Param("enti") OauthCode value, @Param("assist") Assist assist);
 	/**
 	 * 通过OauthCode的id更新OauthCode中属性不为null的数据
 	 * @param enti
 	 * @return
 	 */
-    int updateNonEmptyOauthCodeById(OauthCode enti);
+	long updateNonEmptyOauthCodeById(OauthCode enti);
  	/**
 	 * 通过辅助工具Assist的条件更新OauthCode中属性不为null的数据
 	 * @param value
 	 * @param assist
 	 * @return
 	 */
-    int updateNonEmptyOauthCode(@Param("enti") OauthCode value, @Param("assist") Assist assist);
+    long updateNonEmptyOauthCode(@Param("enti") OauthCode value, @Param("assist") Assist assist);
 }

@@ -35,27 +35,27 @@ public class OauthRefreshTokenServiceImpl implements OauthRefreshTokenService{
         return oauthRefreshTokenDao.insertNonEmptyOauthRefreshToken(value);
     }
     @Override
-    public int deleteOauthRefreshTokenById(Object id){
+    public long deleteOauthRefreshTokenById(Object id){
         return oauthRefreshTokenDao.deleteOauthRefreshTokenById(id);
     }
     @Override
-    public int deleteOauthRefreshToken(Assist assist){
+    public long deleteOauthRefreshToken(Assist assist){
         return oauthRefreshTokenDao.deleteOauthRefreshToken(assist);
     }
     @Override
-    public int updateOauthRefreshTokenById(OauthRefreshToken enti){
+    public long updateOauthRefreshTokenById(OauthRefreshToken enti){
         return oauthRefreshTokenDao.updateOauthRefreshTokenById(enti);
     }
     @Override
-    public int updateOauthRefreshToken(OauthRefreshToken value, Assist assist){
+    public long updateOauthRefreshToken(OauthRefreshToken value, Assist assist){
         return oauthRefreshTokenDao.updateOauthRefreshToken(value,assist);
     }
     @Override
-    public int updateNonEmptyOauthRefreshTokenById(OauthRefreshToken enti){
+    public long updateNonEmptyOauthRefreshTokenById(OauthRefreshToken enti){
         return oauthRefreshTokenDao.updateNonEmptyOauthRefreshTokenById(enti);
     }
     @Override
-    public int updateNonEmptyOauthRefreshToken(OauthRefreshToken value, Assist assist){
+    public long updateNonEmptyOauthRefreshToken(OauthRefreshToken value, Assist assist){
         return oauthRefreshTokenDao.updateNonEmptyOauthRefreshToken(value,assist);
     }
 

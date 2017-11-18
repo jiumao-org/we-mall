@@ -186,6 +186,34 @@
 			<version>5.1.32</version>
 		</dependency>
 
+		<!-- spring data mongodb-->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>2.0.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.5.0</version>
+		</dependency>
+		<!-- oauth2.0 -->
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+			<version>2.2.0.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
 
 		<!-- ehcache 相关依赖 -->
 		<dependency>
@@ -198,8 +226,6 @@
 			<artifactId>ehcache-spring-annotations</artifactId>
 			<version>1.2.0</version>
 		</dependency>
-
-
 
 		<!-- other -->
 		<dependency>
