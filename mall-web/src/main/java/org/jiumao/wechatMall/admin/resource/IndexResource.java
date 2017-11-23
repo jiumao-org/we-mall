@@ -16,7 +16,6 @@ import org.jiumao.common.constants.LoggerName;
 import org.jiumao.common.utils.JsonUtil;
 import org.jiumao.mall.auth.AuthAnnotation;
 import org.jiumao.wechatMall.entity.User;
-import org.jiumao.wechatMall.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -27,9 +26,6 @@ import org.springframework.stereotype.Component;
 public class IndexResource {
 	private static final Logger log = LoggerFactory
 			.getLogger(LoggerName.Server);
-
-	@Resource
-	UserService userService;
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
@@ -47,14 +43,8 @@ public class IndexResource {
 			@FormParam("verificationCode") String verificationCode,
 			@FormParam("phone") Long phone) {
 		// check not null
-		User u = new User();// dao 应该查询
-		u.setPhone(phone);
-		u.setUsername(userName);
-		u.setPassword(password);
-		User res = userService.selectUserByObj(u);
-		log.info("login:" + phone + "|" + userName);
 
-		return res;
+		return null;
 	}
 
 	@POST
@@ -74,7 +64,6 @@ public class IndexResource {
 		u.setPassword(password);
 		u.setPhone(phone);
 		u.setUsername(userName);
-		int res = userService.insertNonEmptyUser(u);
 		return JsonUtil.bean2Json(u);
 	}
 

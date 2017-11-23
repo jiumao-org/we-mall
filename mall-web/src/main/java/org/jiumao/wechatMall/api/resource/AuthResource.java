@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.jiumao.common.AsynHttp.AsynHttpClient;
 import org.jiumao.common.AsynHttp.AsynHttps;
-import org.jiumao.common.AsynHttp.DoNothingListener;
 import org.jiumao.common.constants.LoggerName;
 import org.jiumao.common.domain.ErrorCode;
 import org.jiumao.common.utils.JsonUtil;
@@ -30,7 +29,6 @@ import org.jiumao.mall.OAuth2.implicit.ImplicitToken;
 import org.jiumao.mall.OAuth2.password.PasswdToken;
 import org.jiumao.mall.domain.Authentication;
 import org.jiumao.wechatMall.common.domain.ResponseUtil;
-import org.jiumao.wechatMall.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -42,8 +40,6 @@ import org.springframework.stereotype.Component;
 public class AuthResource {
     private static final Logger log = LoggerFactory.getLogger(LoggerName.Status);
 
-    @Resource
-    UserService userService;
 
 
     @GET
