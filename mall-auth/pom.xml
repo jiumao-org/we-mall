@@ -16,5 +16,10 @@
 			<artifactId>mall-common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>mall-db</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 </project>

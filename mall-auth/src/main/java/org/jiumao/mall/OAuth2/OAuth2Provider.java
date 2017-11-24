@@ -9,21 +9,37 @@ import org.jiumao.mall.OAuth2.password.PasswdToken;
 
 public interface OAuth2Provider {
 
-    ReturnCode giveCode(String clientId);
+    static ReturnCode giveCode(String clientId) {
+        return null;
+    }
 
 
-    CodeToken hasCode(String code);
+    static CodeToken hasCode(String code) {
+        return null;
+    }
 
 
-    ImplicitToken giveToken(String client_id);
+    static ImplicitToken giveToken(String client_id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 
-    PasswdToken login(String username, String password);
+    static PasswdToken login(String username, String password) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 
-    PasswdToken refresh(String client_id, String client_secret, String refresh_token);
+    static PasswdToken refresh(String client_id, String client_secret, String refresh_token) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 
-    ClientToken client(String client_id, String client_secret);
+    static ClientToken client(String client_id, String client_secret) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

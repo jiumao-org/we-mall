@@ -2,7 +2,7 @@ package org.jiumao.wechatMall;
 
 import static org.junit.Assert.*;
 
-import org.jiumao.common.utils.IdGenerator;
+import org.jiumao.common.utils.IdUtil;
 import org.junit.Test;
 
 public class ModuleTest {
@@ -11,9 +11,9 @@ public class ModuleTest {
 	@Test
 	public void IdGTest() throws Exception {
 		for (int i = 0; i < 100; i++) {
-			IdGenerator.getCardId();
-			IdGenerator.getUserId();
-			IdGenerator.backup();
+			IdUtil.getCardId();
+			IdUtil.getUserId();
+			IdUtil.backup();
 		}
 	}
 	

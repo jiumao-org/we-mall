@@ -5,10 +5,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
+ * 缓存appkey关键数据，定期同步到数据库。
  * <ul>
  * <li>{@link #appkeys} appkey
  * <li>{@link #paths} :可访问的接口路径用多个用,分开
  * <li>{@link #isUsage} :是否可用
+ * <li>{@link #clicks} :访问次数，定期更新
  * 
  * @author ppf@jiumao.org
  * @date 2017年11月22日

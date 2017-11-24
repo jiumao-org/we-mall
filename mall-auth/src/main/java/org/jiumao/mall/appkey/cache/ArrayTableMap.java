@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Timer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,7 +17,7 @@ import org.jiumao.mall.appkey.cache.Table.Row;
 
 
 /**
- * 缓存Appkey数据结构
+ * hash结构，int:table<col1,col2...>
  * 
  * @author ppf@jiumao.org
  * @date 2017年11月22日
@@ -26,6 +27,7 @@ public class ArrayTableMap<T extends AbstractTable> {
 
     private T currentTable;
     private Class<T> clazz;
+    
 
     private int leftShift = 10;
     private final int tableSize = 2 << leftShift;
