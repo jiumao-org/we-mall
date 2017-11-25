@@ -14,12 +14,12 @@ public class AbortFileListener implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
-		IdGenerator.backup();
+		IdUtil.backup();
 	}
 
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
-		IdGenerator.recovery();
+		IdUtil.recovery();
 	}
 
 }

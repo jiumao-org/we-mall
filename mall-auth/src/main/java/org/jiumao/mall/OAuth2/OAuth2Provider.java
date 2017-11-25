@@ -6,33 +6,38 @@ import org.jiumao.mall.OAuth2.code.CodeToken;
 import org.jiumao.mall.OAuth2.implicit.ImplicitToken;
 import org.jiumao.mall.OAuth2.password.PasswdToken;
 
-public class OAuth2Provider {
 
-    public static ReturnCode giveCode(String clientId) {
+public interface OAuth2Provider {
+
+    static ReturnCode giveCode(String clientId) {
         return null;
     }
 
-    public static CodeToken hasCode(String code) {
+
+    static CodeToken hasCode(String code) {
+        return null;
+    }
+
+
+    static ImplicitToken giveToken(String client_id) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public static ImplicitToken giveToken(String client_id) {
+
+    static PasswdToken login(String username, String password) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public static PasswdToken login(String username, String password) {
+
+    static PasswdToken refresh(String client_id, String client_secret, String refresh_token) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public static PasswdToken refresh(String client_id, String client_secret, String refresh_token) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
-    public static ClientToken client(String client_id, String client_secret) {
+    static ClientToken client(String client_id, String client_secret) {
         // TODO Auto-generated method stub
         return null;
     }
