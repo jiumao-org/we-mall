@@ -310,5 +310,6 @@
     <module>mall-db</module>
     <module>mall-auth</module>
     <module>mall-common</module>
+    <module>mall-remoting</module>
   </modules>
 </project>
