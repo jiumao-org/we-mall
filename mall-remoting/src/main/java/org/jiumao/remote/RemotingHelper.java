@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jiumao.remote.common;
+package org.jiumao.remote;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -24,6 +24,7 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
+import org.jiumao.remote.common.RemotingUtil;
 import org.jiumao.remote.exception.RemotingConnectException;
 import org.jiumao.remote.exception.RemotingSendRequestException;
 import org.jiumao.remote.exception.RemotingTimeoutException;

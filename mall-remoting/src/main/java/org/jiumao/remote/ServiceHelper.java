@@ -18,7 +18,7 @@ import org.jiumao.remote.service.RPCHook;
 import org.jiumao.remote.service.RemotingCommand;
 
 
-public class ServiceStartUp {
+public class ServiceHelper {
     private static NettyEncoder encoder = new NettyEncoder();
     private static NettyDecoder decoder = new NettyDecoder();
 
@@ -39,6 +39,10 @@ public class ServiceStartUp {
             
         }
     };
+    
+    public static RemotingCommand shortSocket(RemotingCommand request, String addr) throws RemotingTimeoutException, RemotingSendRequestException, RemotingConnectException, InterruptedException {
+       return RemotingHelper.invokeSync(addr, request, 500);
+    }
 
     public static NettyRemotingClient clientStart(NettyHandler handler,List<String> serverAddrs) {
         NettyRemotingClient client = new NettyRemotingClient(nettyClientConfig, encoder, decoder, handler);
