@@ -7,5 +7,13 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>mall-service</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>mall-auth</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 </project>
