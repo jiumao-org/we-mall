@@ -7,6 +7,7 @@ import org.jiumao.remote.client.NettyRemotingClient;
 import org.jiumao.remote.common.NettyDecoder;
 import org.jiumao.remote.common.NettyEncoder;
 import org.jiumao.remote.common.NettyHandler;
+import org.jiumao.remote.common.RemotingHelper;
 import org.jiumao.remote.exception.RemotingConnectException;
 import org.jiumao.remote.exception.RemotingSendRequestException;
 import org.jiumao.remote.exception.RemotingTimeoutException;
@@ -28,15 +29,11 @@ public class ServiceHelper {
         
         @Override
         public void doBeforeRequest(String remoteAddr, RemotingCommand request) {
-            // TODO Auto-generated method stub
-            
         }
         
         
         @Override
         public void doAfterResponse(RemotingCommand request, RemotingCommand response) {
-            // TODO Auto-generated method stub
-            
         }
     };
     

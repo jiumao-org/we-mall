@@ -11,7 +11,6 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import org.jiumao.common.constants.LoggerName;
-import org.jiumao.remote.RemotingHelper;
 import org.jiumao.remote.exception.RemotingSendRequestException;
 import org.jiumao.remote.exception.RemotingTimeoutException;
 import org.jiumao.remote.exception.RemotingTooMuchRequestException;
