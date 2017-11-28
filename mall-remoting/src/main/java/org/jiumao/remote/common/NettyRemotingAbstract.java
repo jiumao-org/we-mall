@@ -69,7 +69,7 @@ public abstract class NettyRemotingAbstract implements RemotingService {
 
 
     public RemotingCommand invokeSyncImpl(final Channel channel, final RemotingCommand request,
-            final long timeoutMillis) throws InterruptedException {
+            final long timeoutMillis) throws InterruptedException, RemotingTimeoutException, RemotingSendRequestException {
         try {
             final ResponseFuture responseFuture =
                     new ResponseFuture(request.getOpaque(), timeoutMillis, null, null);
@@ -97,12 +97,15 @@ public abstract class NettyRemotingAbstract implements RemotingService {
             if (null == responseCommand) {
                 // 发送请求成功，读取应答超时
                 if (responseFuture.isSendRequestOK()) {
+                    throw new RemotingTimeoutException(RemotingHelper.parseChannelRemoteAddr(channel), timeoutMillis,
+                            responseFuture.getCause());
                 }
                 // 发送请求失败
                 else {
+                    throw new RemotingSendRequestException(RemotingHelper.parseChannelRemoteAddr(channel),
+                            responseFuture.getCause());
                 }
             }
-
             return responseCommand;
         }
         finally {

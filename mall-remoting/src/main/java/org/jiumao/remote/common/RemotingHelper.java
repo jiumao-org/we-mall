@@ -15,6 +15,7 @@
  */
 package org.jiumao.remote.common;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 
 import java.io.IOException;
@@ -23,6 +24,9 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
+import org.jiumao.remote.exception.RemotingConnectException;
+import org.jiumao.remote.exception.RemotingSendRequestException;
+import org.jiumao.remote.exception.RemotingTimeoutException;
 import org.jiumao.remote.service.RemotingCommand;
 
 
@@ -63,10 +67,8 @@ public class RemotingHelper {
 
     /**
      * 短连接调用
-     * @return 
-     * @throws InterruptedException 
      */
-    public static RemotingCommand invokeSync(final String addr,RemotingCommand request, final long timeoutMillis) throws InterruptedException {
+    public static RemotingCommand invokeSync(final String addr,RemotingCommand request, final long timeoutMillis) throws InterruptedException, RemotingTimeoutException, RemotingSendRequestException, RemotingConnectException {
         long beginTime = System.currentTimeMillis();
         SocketAddress socketAddress = RemotingUtil.string2SocketAddress(addr);
         SocketChannel socketChannel = RemotingUtil.connect(socketAddress);
@@ -84,17 +86,21 @@ public class RemotingHelper {
                 socketChannel.socket().setSoTimeout((int) timeoutMillis);
 
                 // 发送数据
-                ByteBuffer byteBufferRequest = request.encode();
+                ByteBuf buf = request.encode();
+                ByteBuffer byteBufferRequest = buf.nioBuffer();
+                buf.release();
                 while (byteBufferRequest.hasRemaining()) {
                     int length = socketChannel.write(byteBufferRequest);
                     if (length > 0) {
                         if (byteBufferRequest.hasRemaining()) {
                             if ((System.currentTimeMillis() - beginTime) > timeoutMillis) {
                                 // 发送请求超时
+                                throw new RemotingSendRequestException(addr);
                             }
                         }
                     }
                     else {
+                        throw new RemotingSendRequestException(addr);
                     }
 
                     // 比较土
@@ -111,10 +117,12 @@ public class RemotingHelper {
                         if (byteBufferSize.hasRemaining()) {
                             if ((System.currentTimeMillis() - beginTime) > timeoutMillis) {
                                 // 接收应答超时
+                                throw new RemotingTimeoutException(addr, timeoutMillis);
                             }
                         }
                     }
                     else {
+                        throw new RemotingTimeoutException(addr, timeoutMillis);
                     }
 
                     // 比较土
@@ -130,10 +138,12 @@ public class RemotingHelper {
                         if (byteBufferBody.hasRemaining()) {
                             if ((System.currentTimeMillis() - beginTime) > timeoutMillis) {
                                 // 接收应答超时
+                                throw new RemotingTimeoutException(addr, timeoutMillis);
                             }
                         }
                     }
                     else {
+                        throw new RemotingTimeoutException(addr, timeoutMillis);
                     }
 
                     // 比较土
@@ -148,8 +158,10 @@ public class RemotingHelper {
                 e.printStackTrace();
 
                 if (sendRequestOK) {
+                    throw new RemotingTimeoutException(addr, timeoutMillis);
                 }
                 else {
+                    throw new RemotingSendRequestException(addr);
                 }
             }
             finally {
@@ -162,8 +174,8 @@ public class RemotingHelper {
             }
         }
         else {
+            throw new RemotingConnectException(addr);
         }
-        return request;
     }
 
 

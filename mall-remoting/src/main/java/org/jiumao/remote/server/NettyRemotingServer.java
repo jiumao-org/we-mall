@@ -24,7 +24,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -42,7 +41,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jiumao.common.constants.LoggerName;
-import org.jiumao.remote.client.NettyClientConfig;
 import org.jiumao.remote.common.NettyDecoder;
 import org.jiumao.remote.common.NettyEncoder;
 import org.jiumao.remote.common.NettyHandler;
@@ -85,8 +83,8 @@ public class NettyRemotingServer extends NettyRemotingAbstract implements Remoti
     private int port = 0;
 
 
-    public NettyRemotingServer(NettyServerConfig nettyServerConfig, NettyEncoder encoder,
-            NettyDecoder decoder, NettyHandler handler) {
+    public NettyRemotingServer(NettyServerConfig nettyServerConfig, NettyEncoder encoder, NettyDecoder decoder,
+            NettyHandler handler) {
         super(nettyServerConfig.getServerOnewaySemaphoreValue(), nettyServerConfig
             .getServerAsyncSemaphoreValue());
         this.nettyServerConfig = nettyServerConfig;
@@ -156,9 +154,7 @@ public class NettyRemotingServer extends NettyRemotingAbstract implements Remoti
                     .channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 1024)
                     .option(ChannelOption.SO_REUSEADDR, true).childOption(ChannelOption.TCP_NODELAY, true)
                     .childOption(ChannelOption.SO_SNDBUF, NettySystemConfig.SocketSndbufSize)
-                    //
                     .childOption(ChannelOption.SO_RCVBUF, NettySystemConfig.SocketRcvbufSize)
-
                     .localAddress(new InetSocketAddress(this.nettyServerConfig.getListenPort()))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override

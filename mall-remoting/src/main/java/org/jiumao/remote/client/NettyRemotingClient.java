@@ -18,12 +18,17 @@ import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 
 import java.net.SocketAddress;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -68,11 +73,16 @@ public class NettyRemotingClient extends NettyRemotingAbstract implements Remoti
     // 处理相关
     private static final long LockTimeoutMillis = 3000;
     private final Lock lockChannelTables = new ReentrantLock();
+    private final Lock lockServerChannel = new ReentrantLock();
+    private final AtomicInteger serverIndex = new AtomicInteger(initValueIndex());
+    private final AtomicReference<String> serverChoosed = new AtomicReference<String>();
+    private final AtomicReference<List<String>> serverList = new AtomicReference<List<String>>();
     private final ConcurrentHashMap<String /* addr */, ChannelWrapper> channelTables =
             new ConcurrentHashMap<String, ChannelWrapper>();
 
-    public NettyRemotingClient(NettyClientConfig nettyClientConfig,
-            NettyEncoder encoder, NettyDecoder decoder, NettyHandler handler) {
+
+    public NettyRemotingClient(NettyClientConfig nettyClientConfig, NettyEncoder encoder,
+            NettyDecoder decoder, NettyHandler handler) {
         super(nettyClientConfig.getClientOnewaySemaphoreValue(), nettyClientConfig
             .getClientAsyncSemaphoreValue());
         this.nettyClientConfig = nettyClientConfig;
@@ -170,7 +180,41 @@ public class NettyRemotingClient extends NettyRemotingAbstract implements Remoti
     }
 
 
+    public void updateServerAddressList(List<String> addrs) {
+        List<String> old = this.serverList.get();
+        boolean update = false;
+
+        if (!addrs.isEmpty()) {
+            if (null == old) {
+                update = true;
+            }
+            else if (addrs.size() != old.size()) {
+                update = true;
+            }
+            else {
+                for (int i = 0; i < addrs.size() && !update; i++) {
+                    if (!old.contains(addrs.get(i))) {
+                        update = true;
+                    }
+                }
+            }
+
+            if (update) {
+                Collections.shuffle(addrs);
+                this.serverList.set(addrs);
+            }
+        }
+    }
+
+
+    public List<String> getServerAddrList() {
+        return serverList.get();
+    }
+
+
     public Channel getAndCreateChannel(final String addr) throws InterruptedException {
+        if (null == addr)
+            return getAndCreateServerChannel();
 
         ChannelWrapper cw = this.channelTables.get(addr);
         if (cw != null && cw.isOK()) {
@@ -178,6 +222,77 @@ public class NettyRemotingClient extends NettyRemotingAbstract implements Remoti
         }
 
         return this.createChannel(addr);
+    }
+
+
+    private Channel getAndCreateServerChannel() throws InterruptedException {
+        String addr = this.serverChoosed.get();
+        if (addr != null) {
+            ChannelWrapper cw = this.channelTables.get(addr);
+            if (cw != null && cw.isOK()) {
+                return cw.getChannel();
+            }
+        }
+
+        final List<String> addrList = this.serverList.get();
+        // 加锁，尝试创建连接
+        if (this.lockServerChannel.tryLock(LockTimeoutMillis, TimeUnit.MILLISECONDS)) {
+            try {
+                addr = this.serverChoosed.get();
+                if (addr != null) {
+                    ChannelWrapper cw = this.channelTables.get(addr);
+                    if (cw != null && cw.isOK()) {
+                        return cw.getChannel();
+                    }
+                }
+
+                if (addrList != null && !addrList.isEmpty()) {
+                    for (int i = 0; i < addrList.size(); i++) {
+                        int index = this.serverIndex.incrementAndGet();
+                        index = Math.abs(index);
+                        index = index % addrList.size();
+                        String newAddr = addrList.get(index);
+
+                        this.serverChoosed.set(newAddr);
+                        Channel channelNew = this.createChannel(newAddr);
+                        if (channelNew != null)
+                            return channelNew;
+                    }
+                }
+            }
+            catch (Exception e) {
+                log.error("getAndCreateServerChannel: create name server channel exception", e);
+            }
+            finally {
+                this.lockServerChannel.unlock();
+            }
+        }
+        else {
+            log.warn("getAndCreateServerChannel: try to lock name server, but timeout, {}ms",
+                LockTimeoutMillis);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * 添加服务端地址
+     */
+    public void addServer(String addr) throws InterruptedException {
+        Objects.requireNonNull(addr, "添加的服务地址不能为空");
+        List<String> servers = serverList.get();
+        if (!servers.contains(addr)) {
+            serverList.set(servers);
+            if (this.lockChannelTables.tryLock(LockTimeoutMillis, TimeUnit.MILLISECONDS)) {
+                servers.add(addr);
+                ChannelFuture channelFuture =
+                        this.bootstrap.connect(RemotingHelper.string2SocketAddress(addr));
+                log.info("createChannel: begin to connect remote host[{}] asynchronously", addr);
+                this.channelTables.put(addr, new ChannelWrapper(channelFuture));
+            }
+            serverChoosed.set(addr);
+        }
     }
 
 
@@ -423,6 +538,13 @@ public class NettyRemotingClient extends NettyRemotingAbstract implements Remoti
     }
 
 
+    private static int initValueIndex() {
+        Random r = new Random();
+
+        return Math.abs(r.nextInt() % 999) % 999;
+    }
+
+
     @Override
     public void registerRPCHook(RPCHook rpcHook) {
         this.rpcHook = rpcHook;
@@ -433,7 +555,6 @@ public class NettyRemotingClient extends NettyRemotingAbstract implements Remoti
     public RPCHook getRPCHook() {
         return this.rpcHook;
     }
-
 
     class ChannelWrapper {
         private final ChannelFuture channelFuture;
@@ -510,6 +631,27 @@ public class NettyRemotingClient extends NettyRemotingAbstract implements Remoti
 
             ctx.fireUserEventTriggered(evt);
         }
+    }
+
+    @Override
+    public RemotingCommand invokeSync(RemotingCommand request) throws InterruptedException,
+            RemotingConnectException, RemotingSendRequestException, RemotingTimeoutException {
+        return this.invokeSync(this.serverChoosed.get(), request, TimeoutMillis);
+    }
+
+
+    @Override
+    public void invokeAsync(RemotingCommand request, InvokeCallback invokeCallback)
+            throws InterruptedException, RemotingConnectException, RemotingTooMuchRequestException,
+            RemotingTimeoutException, RemotingSendRequestException {
+        this.invokeAsync(this.serverChoosed.get(), request, TimeoutMillis, invokeCallback);
+    }
+
+
+    @Override
+    public void invokeOneway(RemotingCommand request) throws InterruptedException, RemotingConnectException,
+            RemotingTooMuchRequestException, RemotingTimeoutException, RemotingSendRequestException {
+        this.invokeOneway(this.serverChoosed.get(), request, TimeoutMillis);
     }
 
 }

@@ -15,8 +15,6 @@
  */
 package org.jiumao.remote.client;
 
-import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 import org.jiumao.remote.exception.RemotingConnectException;
 import org.jiumao.remote.exception.RemotingSendRequestException;
@@ -32,6 +30,11 @@ import org.jiumao.remote.service.RemotingService;
  */
 public interface RemotingClient extends RemotingService {
 
+    long TimeoutMillis = 300;
+
+
+    public RemotingCommand invokeSync(final RemotingCommand request) throws InterruptedException,
+            RemotingConnectException, RemotingSendRequestException, RemotingTimeoutException;
 
 
     public RemotingCommand invokeSync(final String addr, final RemotingCommand request,
@@ -39,9 +42,19 @@ public interface RemotingClient extends RemotingService {
             RemotingSendRequestException, RemotingTimeoutException;
 
 
+    public void invokeAsync(final RemotingCommand request, final InvokeCallback invokeCallback)
+            throws InterruptedException, RemotingConnectException, RemotingTooMuchRequestException,
+            RemotingTimeoutException, RemotingSendRequestException;
+
+
     public void invokeAsync(final String addr, final RemotingCommand request, final long timeoutMillis,
             final InvokeCallback invokeCallback) throws InterruptedException, RemotingConnectException,
             RemotingTooMuchRequestException, RemotingTimeoutException, RemotingSendRequestException;
+
+
+    public void invokeOneway(final RemotingCommand request) throws InterruptedException,
+            RemotingConnectException, RemotingTooMuchRequestException, RemotingTimeoutException,
+            RemotingSendRequestException;
 
 
     public void invokeOneway(final String addr, final RemotingCommand request, final long timeoutMillis)
