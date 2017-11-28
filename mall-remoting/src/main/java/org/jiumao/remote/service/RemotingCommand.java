@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.jiumao.remote.common.JsonSerializable;
+import org.jiumao.common.utils.JsonSerializable;
 
 
 /**

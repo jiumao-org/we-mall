@@ -1,4 +1,4 @@
-package org.jiumao.remote.common;
+package org.jiumao.common.utils;
 
 import java.nio.charset.Charset;
 
