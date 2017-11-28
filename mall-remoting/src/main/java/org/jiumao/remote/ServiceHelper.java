@@ -63,7 +63,7 @@ public class ServiceHelper {
         NettyHandler handler = null;
         List<String> serverAddrs = null;
         NettyRemotingClient authRPC =  clientStart(handler, serverAddrs);
-        RemotingCommand request = null;
+        RemotingCommand request = RemotingCommand.createRequestCommand();
         InvokeCallback invokeCallback = null;
         authRPC.invokeAsync(request, invokeCallback);
         authRPC.invokeOneway(request);

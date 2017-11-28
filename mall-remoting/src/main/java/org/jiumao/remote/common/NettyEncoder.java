@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
-import java.nio.ByteBuffer;
 
 import org.jiumao.common.constants.LoggerName;
 import org.jiumao.remote.service.RemotingCommand;
