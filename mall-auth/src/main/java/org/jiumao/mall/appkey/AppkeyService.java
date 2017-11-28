@@ -17,7 +17,7 @@ public class AppkeyService {
 
     private static final ArrayTableMap<AppkeyTable> Appkeys = new ArrayTableMap<AppkeyTable>(
         AppkeyTable.class);
-    private static final Timer UpdateAppkeyClicksToMongo = new Timer();
+    private static final Timer UpdateAppkeyClicksToMongo = new Timer("AppkeyService",true);
 
 
     public static void startUpdateAppkeys() {
