@@ -1,28 +1,20 @@
 package org.jiumao.db.kafka.stream.serdes;
 
-import java.io.IOException;
 import java.util.Map;
 
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
+import org.jiumao.common.utils.JsonSerializable;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * This deserializer can deserialize any object of POJO class
- * 
- * @author Jason Guo <habren@163.com>
- *
- * @param <T>
- *            POJO class. The class should have a constructor without any
- *            arguments and have setter and getter for every member variable
- * 
+ * @author ppf@jiumao.org
+ * @date 2017年11月30日
+ * @param <T> 反序列化对象 fastjson
  */
-
 public class GenericDeserializer<T> implements Deserializer<T> {
 
 	private Class<T> type;
-	private ObjectMapper objectMapper = new ObjectMapper();
 
 	public GenericDeserializer() {}
 	
@@ -52,8 +44,8 @@ public class GenericDeserializer<T> implements Deserializer<T> {
 			return null;
 		}
 		try {
-			return this.objectMapper.readValue(data, type);
-		} catch (IOException ex) {
+			return JsonSerializable.decode(data, type);
+		} catch (Exception ex) {
 			throw new SerializationException(ex);
 		}
 	}

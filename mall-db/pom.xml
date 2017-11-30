@@ -12,7 +12,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<kafka.version>0.10.1.0</kafka.version>
+		<kafka.version>1.0.0</kafka.version>
 	</properties>
 
 
@@ -22,7 +22,6 @@
 			<artifactId>mall-common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
@@ -32,8 +31,8 @@
 		<!-- kafka -->
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
-			<artifactId>kafka_2.11</artifactId>
-			<version>0.10.1.0</version>
+			<artifactId>kafka_2.12</artifactId>
+			<version>${kafka.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.101tec</groupId>
@@ -44,23 +43,12 @@
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka-clients</artifactId>
-			<version>0.10.1.0</version>
+			<version>${kafka.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka-streams</artifactId>
-			<version>0.10.1.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.101tec</groupId>
-					<artifactId>zkclient</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.101tec</groupId>
-			<artifactId>zkclient</artifactId>
-			<version>0.10</version>
+			<version>${kafka.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -71,16 +59,6 @@
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-library</artifactId>
 			<version>2.11.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.zookeeper</groupId>
-			<artifactId>zookeeper</artifactId>
-			<version>3.4.6</version>
-		</dependency>
-		<dependency>
-			<groupId>org.xerial.snappy</groupId>
-			<artifactId>snappy-java</artifactId>
-			<version>1.1.1.6</version>
 		</dependency>
 
 	</dependencies>
