@@ -57,7 +57,7 @@ public class OAuth2ServerHandler extends NettyHandler {
         default:
             break;
         }
-        ctx.writeAndFlush(msg);
+        ctx.write(msg);
     }
 
 

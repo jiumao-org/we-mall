@@ -18,7 +18,7 @@
 	<!--credentials的配置形式是：用户名:密码@默认数据库 -->
 	<mongo:mongo-client id="mongoClient" host="${mongo.host}"
 		port="${mongo.port}" credentials="${mongo.username}:${mongo.password}@${mongo.dbname}">
-		<mongo:client-options write-concern="MAJORITY"
+		<mongo:client-options write-concern="SAFE"
 			connections-per-host="${mongo.connectionsPerHost}"
 			threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
 			connect-timeout="${mongo.connectTimeout}" max-wait-time="${mongo.maxWaitTime}"
