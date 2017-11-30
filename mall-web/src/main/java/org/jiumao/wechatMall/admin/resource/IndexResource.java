@@ -73,6 +73,8 @@ public class IndexResource {
 	@AuthAnnotation
 	public String info(@PathParam("id") String name) {
 		return "{}";
+		
+		
 	}
 
 }
