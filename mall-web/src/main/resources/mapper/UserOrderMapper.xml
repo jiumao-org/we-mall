@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jiumao.wechatMall.dao.UserOrderDao">
+    <!-- UserOrder的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_UserOrder_Map" type="org.jiumao.wechatMall.entity.UserOrder">
+        <id column="id" property="id" />
+        <result column="userId" property="userid" />
+        <result column="orderId" property="orderid" />
+    </resultMap>
+
+	   <!-- Assist用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
+    <sql id="Assist">
+        <where>
+            <foreach collection="require" item="req" separator=" ">
+                ${req.require} #{req.value} <if test="req.suffix != null"> ${req.suffix}</if>
+            </foreach>
+        </where>
+    </sql>
+
+	   <!-- updateAssist用于更新数据的使用它拓展自Assist,用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
+    <sql id="updateAssist">
+        <where>
+            <foreach collection="assist.require" item="req" separator=" ">
+                ${req.require} #{req.value} <if test="req.suffix != null"> ${req.suffix}</if>
+            </foreach>
+        </where>
+    </sql>
+
+    <!-- 数据库中表名为:user_order的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="user_order_Column">
+        user_order.id as id
+        ,user_order.userId as userId
+        ,user_order.orderId as orderId
+    </sql>
+
+    <!--获得类名为:UserOrder对应的数据库表的数据总行数 -->
+    <select id="getUserOrderRowCount" parameterType="org.jiumao.wechatMall.common.Assist" resultType="java.lang.Long">
+        select count(id) from user_order
+        <if test="require!=null"><include refid="Assist" /></if>
+    </select>
+    <!-- 获得类名为:UserOrder对应数据库中表的数据集合 -->
+    <select id="selectUserOrder" parameterType="org.jiumao.wechatMall.common.Assist"  resultMap="result_UserOrder_Map">
+        select  <if test="distinct !=null">${distinct}</if>
+        <choose>
+            <when test="resultColumn!=null">${resultColumn}</when>
+            <otherwise>
+        <include refid="user_order_Column" /> 
+            </otherwise>
+        </choose>
+        from user_order
+        <choose>
+            <when test="rowSize ==null">
+                <if test="require!=null">
+                    <include refid="Assist" />
+                </if>
+                <if test="order !=null">${order}</if>
+            </when>
+            <otherwise>
+                inner join
+                (
+                SELECT id as primary_key FROM user_order
+                <if test="require!=null">
+                    <include refid="Assist" />
+                </if>
+                <if test="order !=null">${order}</if>
+                <choose>
+                    <when test="startRow !=null and rowSize !=null">LIMIT #{startRow},#{rowSize} </when>
+                    <when test="rowSize !=null">LIMIT #{rowSize}</when>
+                 </choose>
+                 ) as tmp
+                 on tmp.primary_key=user_order.id
+            </otherwise>
+        </choose>
+    </select> 
+
+    <!-- 获得一个UserOrder对象,以参数UserOrder对象中不为空的属性作为条件进行查询-->
+    <select id="selectUserOrderByObj" parameterType="org.jiumao.wechatMall.entity.UserOrder" resultMap="result_UserOrder_Map">
+        select 
+            <include refid="user_order_Column" /> 
+        from user_order
+        <where>
+            <if test="orderid != null "> and user_order.orderId = #{orderid}</if>
+            <if test="userid != null "> and user_order.userId = #{userid}</if>
+            <if test="id != null "> and user_order.id = #{id}</if>
+        </where>
+    </select> 
+
+    <!-- 通过UserOrder的id获得对应数据库中表的数据对象-->
+    <select id="selectUserOrderById" parameterType="java.lang.Object" resultMap="result_UserOrder_Map">
+        select 
+            <include refid="user_order_Column" /> 
+        from user_order
+        where user_order.id = #{id}
+    </select> 
+
+    <!-- 将UserOrder插入到对应数据库的表中,包括属性值为null的数据-->
+
+    <insert id="insertUserOrder" parameterType="org.jiumao.wechatMall.entity.UserOrder">
+        insert into user_order(id,userId,orderId) 
+        values(#{id},#{userid},#{orderid})
+    </insert>
+
+    <!-- 将UserOrder中属性值不为null的数据,插入到对应数据库的表中-->
+    <insert id="insertNonEmptyUserOrder" parameterType="org.jiumao.wechatMall.entity.UserOrder">
+        insert into user_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userid != null">userId,</if>
+            <if test="orderid != null">orderId,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id},</if>
+            <if test="userid != null"> #{userid},</if>
+            <if test="orderid != null"> #{orderid},</if>
+        </trim>
+    </insert>
+
+    <!-- 通过UserOrder的id将数据库表中对应的数据删除-->
+    <delete id="deleteUserOrderById" parameterType="java.lang.Object">
+        delete from user_order
+        where id = #{id}
+    </delete>
+
+    <!-- 通过辅助工具Assist中的条件将UserOrder对应的数据库表的数据删除-->
+    <delete id="deleteUserOrder" parameterType="org.jiumao.wechatMall.common.Assist">
+        delete from user_order
+        <if test="require!=null"><include refid="Assist" /></if>
+    </delete>
+
+    <!-- 通过UserOrder的id将UserOrder的数据更新到数据库中对应的表,包括值null的数据-->
+    <update id="updateUserOrderById" parameterType="org.jiumao.wechatMall.entity.UserOrder">
+        update user_order set
+            userId=#{userid}
+            ,orderId=#{orderid}
+        where id=#{id}
+    </update>
+
+    <!-- 通过UserOrder的id将UserOrder中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyUserOrderById" parameterType="org.jiumao.wechatMall.entity.UserOrder">
+        update user_order
+        <set>
+            <if test="userid != null">
+                userId=#{userid},
+            </if>
+            <if test="orderid != null">
+                orderId=#{orderid},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!-- 通过辅助工具Assist中的条件将UserOrder中的数据更新到数据库对应的表中,包括值为null的数据-->
+    <update id="updateUserOrder" parameterType="map">
+        update user_order
+        <set>
+                id=#{enti.id},
+                userId=#{enti.userid},
+                orderId=#{enti.orderid},
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+    <!-- 通过辅助工具Assist中的条件将UserOrder中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyUserOrder" parameterType="map">
+        update user_order
+        <set>
+            <if test="enti.id != null">
+                id=#{enti.id},
+            </if>
+            <if test="enti.userid != null">
+                userId=#{enti.userid},
+            </if>
+            <if test="enti.orderid != null">
+                orderId=#{enti.orderid},
+            </if>
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+</mapper>
