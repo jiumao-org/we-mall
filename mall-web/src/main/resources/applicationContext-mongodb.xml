@@ -1,47 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-			http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+          http://www.springframework.org/schema/beans/spring-beans.xsd 
+          http://www.springframework.org/schema/context 
+          http://www.springframework.org/schema/context/spring-context.xsd 
+          http://www.springframework.org/schema/data/mongo 
+          http://www.springframework.org/schema/data/mongo/spring-mongo.xsd 
+          http://www.springframework.org/schema/data/repository
+          http://www.springframework.org/schema/data/repository/spring-repository.xsd
+          http://www.springframework.org/schema/util 
+          http://www.springframework.org/schema/util/spring-util.xsd"
+	default-lazy-init="default">
 
+	<!--credentials的配置形式是：用户名:密码@默认数据库 -->
+	<mongo:mongo-client id="mongoClient" host="${mongo.host}"
+		port="${mongo.port}" credentials="${mongo.username}:${mongo.password}@${mongo.dbname}">
+		<mongo:client-options write-concern="SAFE"
+			connections-per-host="${mongo.connectionsPerHost}"
+			threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
+			connect-timeout="${mongo.connectTimeout}" max-wait-time="${mongo.maxWaitTime}"
+			socket-keep-alive="${mongo.socketKeepAlive}" socket-timeout="${mongo.socketTimeout}" />
 
-    <!-- property configuration -->
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:mongodb.properties</value>
-            </list>
-        </property>
-    </bean>
+	</mongo:mongo-client>
 
-    <!-- 定义mongo对象，对应的是mongodb官方jar包中的Mongo -->
-    <mongo:mongo  id="mongodb" host="${mongo.host}" port="${mongo.port}">
-        <mongo:options
-                connections-per-host="${mongo.connectionsPerHost}"
-                threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
-                connect-timeout="${mongo.connectTimeout}"
-                max-wait-time="${mongo.maxWaitTime}"
-                auto-connect-retry="${mongo.autoConnectRetry}"
-                socket-keep-alive="${mongo.socketKeepAlive}"
-                socket-timeout="${mongo.socketTimeout}"
-                slave-ok="${mongo.slaveOk}"
-                write-number="1"
-                write-timeout="0"
-                write-fsync="true" />
-    </mongo:mongo>
+	<mongo:db-factory id="mongoDbFactory" dbname="${mongo.dbname}"
+		mongo-ref="mongoClient" />
 
-    <mongo:db-factory  dbname="${mongo.dbname}" username="${mongo.username}"  password="${mongo.password}" id="mongoDbFactory" />
-
-
-    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-    </bean>
-
-    <!-- Base package to scan the mongo repositories, where we create de DAOS to access data and domain objects -->
-    <!-- MongoRepository -->
-    <mongo:repositories base-package="org.jiumao.mall.db.mongodb"/>
-
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+	</bean>
 </beans>
