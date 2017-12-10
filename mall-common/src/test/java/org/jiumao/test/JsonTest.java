@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jiumao.common.utils.JsonSerializable;
+import org.jiumao.common.utils.JsonUtil;
 import org.junit.Test;
 
 public class JsonTest {
@@ -16,7 +16,7 @@ public class JsonTest {
         m.put("action", "auth");
         m.put("token", "auth");
         
-        String json  =JsonSerializable.toJson(m, false);
+        String json  =JsonUtil.toJson(m, false);
         System.out.println(json);
     }
 

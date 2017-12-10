@@ -15,8 +15,13 @@ import org.jiumao.db.kafka.AbstractKafkaClient;
 public class OrderProducer extends AProducer<Long, byte[]> {
 
     public OrderProducer() {
-        super(OrderConsumer.ORDER_COMMIT_TOPIC);
+        super(OrderConstants.ORDER_COMMITED_TOPIC);
     }
+    
+    public OrderProducer(String topic) {
+        super(topic);
+    }
+    
 
     @Override
     public KafkaProducer<Long, byte[]> worker() {

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.jiumao.common.utils.JsonSerializable;
+import org.jiumao.common.utils.JsonUtil;
 
 
 /**
@@ -90,7 +90,7 @@ public class RemotingCommand {
         byte[] ext = new byte[extLen];
         buffer.get(ext);
         @SuppressWarnings("unchecked")
-        HashMap<String, String> extFields = JsonSerializable.decode(ext, HashMap.class);
+        HashMap<String, String> extFields = JsonUtil.decode(ext, HashMap.class);
         cmd.setExtFields(extFields);
 
         return cmd;
@@ -112,7 +112,7 @@ public class RemotingCommand {
         int reqId = cmd.getOpaque();
         byte[] body = cmd.getBody();
         HashMap<String, String> msgs = cmd.getExtFields();
-        byte[] append = JsonSerializable.toBytes(msgs);
+        byte[] append = JsonUtil.toBytes(msgs);
         int initialCapacity = 4 + 4 // total size+reqId
                 + 4 + body.length // body
                 + 4 + append.length;// apend

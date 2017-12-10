@@ -7,7 +7,6 @@ import io.netty.channel.ChannelHandlerContext;
 import org.apache.commons.lang3.StringUtils;
 import org.jiumao.common.AsynHttp.AsynHttpClient;
 import org.jiumao.common.AsynHttp.AsynHttps;
-import org.jiumao.common.utils.JsonSerializable;
 import org.jiumao.common.utils.JsonUtil;
 import org.jiumao.mall.OAuth2.client.ClientToken;
 import org.jiumao.mall.OAuth2.code.CodeToken;
@@ -63,26 +62,26 @@ public class OAuth2ServerHandler extends NettyHandler {
 
     private void token(ChannelHandlerContext ctx, RemotingCommand msg) {
         byte[] entity = null;
-        Authentication auth = JsonSerializable.decode(msg.getBody(), Authentication.class);
+        Authentication auth = JsonUtil.decode(msg.getBody(), Authentication.class);
         GrantType type = GrantType.valueOf(auth.getGrant_type());
         switch (type) {
         case authorization_code:
             CodeToken ct = OAuth2Provider.hasCode(auth.getCode());
             if (null != ct) {
-                entity = JsonSerializable.toBytes(ct);
+                entity = JsonUtil.toBytes(ct);
             }
             break;
         case password:
             // base64 author
             PasswdToken pwd = OAuth2Provider.login(auth.getUsername(), auth.getPassword());
             if (null != pwd) {
-                entity = JsonSerializable.toBytes(pwd);
+                entity = JsonUtil.toBytes(pwd);
             }
             break;
         case clientcredentials:
             ClientToken clientToken = OAuth2Provider.client(auth.getClient_id(), auth.getClient_secret());
             if (null != clientToken) {
-                entity = JsonSerializable.toBytes(clientToken);
+                entity = JsonUtil.toBytes(clientToken);
             }
             break;
         case refresh_token:
@@ -90,7 +89,7 @@ public class OAuth2ServerHandler extends NettyHandler {
                     OAuth2Provider.refresh(auth.getClient_id(), auth.getClient_secret(),
                         auth.getRefresh_token());
             if (null != pwdT) {
-                entity = JsonSerializable.toBytes(pwdT);
+                entity = JsonUtil.toBytes(pwdT);
             }
             break;
 
@@ -102,7 +101,7 @@ public class OAuth2ServerHandler extends NettyHandler {
 
 
     private void auth(ChannelHandlerContext ctx, RemotingCommand msg) {
-        Authorize auth = JsonSerializable.decode(msg.getBody(), Authorize.class);
+        Authorize auth = JsonUtil.decode(msg.getBody(), Authorize.class);
 
         ResponseType type = ResponseType.valueOf(auth.getResponse_type());
         byte[] entity = null;
@@ -114,7 +113,7 @@ public class OAuth2ServerHandler extends NettyHandler {
         case code:
             ReturnCode code = OAuth2Provider.giveCode(auth.getClient_id());
             if (null != code) {
-                entity = JsonSerializable.toBytes(code);
+                entity = JsonUtil.toBytes(code);
             }
 
             sendRedirect(auth, "code=" + code.getCode());
@@ -129,7 +128,7 @@ public class OAuth2ServerHandler extends NettyHandler {
             ImplicitToken token = OAuth2Provider.giveToken(auth.getClient_id());
             if (null != token) {
                 token.setState(auth.getState());
-                entity = JsonSerializable.toBytes(token);
+                entity = JsonUtil.toBytes(token);
             }
 
             sendRedirect(auth, "access_token=" + token.getAccess_token(),

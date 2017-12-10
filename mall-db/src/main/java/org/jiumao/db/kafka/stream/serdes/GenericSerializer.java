@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Serializer;
-import org.jiumao.common.utils.JsonSerializable;
+import org.jiumao.common.utils.JsonUtil;
 
 
 /**
@@ -43,7 +43,7 @@ public class GenericSerializer<T> implements Serializer<T> {
 			return null;
 		}
 		try {
-			return JsonSerializable.toBytes(object);
+			return JsonUtil.toBytes(object);
 		} catch (Exception ex) {
 			throw new SerializationException(ex);
 		}

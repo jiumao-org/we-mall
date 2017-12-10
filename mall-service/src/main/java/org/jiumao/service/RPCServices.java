@@ -1,9 +1,9 @@
 package org.jiumao.service;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
 import org.jiumao.remote.client.NettyRemotingClient;
 import org.jiumao.service.impl.AuthServiceImpl;
 import org.jiumao.service.impl.OrderServiceImpl;
+import org.jiumao.service.order.OrderProducer;
 
 
 public abstract class RPCServices {
@@ -12,7 +12,7 @@ public abstract class RPCServices {
        return AuthServiceImpl.INSTANCE.getInstance();
     }
     
-    public static KafkaProducer<Long, byte[]> getOrderService() {
+    public static OrderProducer getOrderService() {
         return OrderServiceImpl.INSTANCE.getInstance();
     }
 
