@@ -2,6 +2,7 @@ package org.jiumao.service.order;
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -15,10 +16,15 @@ import org.jiumao.db.kafka.AbstractKafkaClient;
 
 public class OrderConsumer extends AConsumer<Long, byte[]> {
 
-    private static final String ORDER_COMMIT_TOPIC = "OrderCommit";
+    static final String ORDER_COMMIT_TOPIC = "OrderCommit";
 
-    public static void main(String[] args) {}
+    public static void main(String[] args) {
+        new OrderConsumer().work();
+    }
 
+    public OrderConsumer() {
+        topics = Arrays.asList(ORDER_COMMIT_TOPIC);
+    }
 
     @Override
     public KafkaConsumer<Long, byte[]> worker() {
@@ -33,7 +39,7 @@ public class OrderConsumer extends AConsumer<Long, byte[]> {
                 .build();
 
         this.worker = new KafkaConsumer<>(props);
-        this.worker.subscribe(Arrays.asList(ORDER_COMMIT_TOPIC));
+        this.worker.subscribe(topics);
         System.out.printf("started");
         return this.worker;
     }
