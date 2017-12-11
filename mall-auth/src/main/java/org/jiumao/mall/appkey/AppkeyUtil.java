@@ -13,9 +13,6 @@ public final class AppkeyUtil {
     public static final IdGenerator<Integer> DefaultGenerator = () -> {
         return RandomUtils.nextInt(startInclusive, endExclusive);
     };
-
-    
-
     
 
 }

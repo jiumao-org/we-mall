@@ -25,7 +25,7 @@ public class RemotingCommand {
     private static final int RPC_ONEWAY = 1;
     private int opaque;
 
-    private HashMap<String, String> extFields;
+    private HashMap<String, String> extFields = new HashMap<>(4);
 
     private transient byte[] body;
 

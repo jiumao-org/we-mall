@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.jiumao.common.domain.Msg;
 import org.jiumao.common.utils.IdUtil;
 import org.jiumao.mall.auth.AuthAnnotation;
 import org.jiumao.service.RPCServices;
@@ -29,7 +30,7 @@ public class MallResource {
     @Path("order/commit")
     @Consumes(MediaType.APPLICATION_JSON)
     @AuthAnnotation
-    public User orderCommit(Order order) {
+    public Msg orderCommit(Order order) {
         Objects.requireNonNull(order);
 
         order.setCreatTime(System.currentTimeMillis());
@@ -38,12 +39,7 @@ public class MallResource {
         OrderProducer producer = RPCServices.getOrderService();
         producer.send(key, order.encode());
         
-        return null;
-    }
-
-    public static void main(String[] args) {
-        int i = Integer.MAX_VALUE;
-        System.out.println(i);
+        return new Msg(key, "订单号");
     }
 
 

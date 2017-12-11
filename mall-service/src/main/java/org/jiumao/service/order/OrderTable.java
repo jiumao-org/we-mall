@@ -8,6 +8,7 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
+import org.jiumao.common.utils.MallConstants;
 import org.jiumao.db.kafka.ATable;
 
 /**
@@ -18,19 +19,19 @@ import org.jiumao.db.kafka.ATable;
  */
 public class OrderTable extends ATable<Long, byte[]> {
 
-    private String queryableStoreName = OrderConstants.ORDER_COMMITED_TOPIC + QUERY_TABLE_POSTFIX;
+    private String queryableStoreName = MallConstants.ORDER_COMMITED_TOPIC + QUERY_TABLE_POSTFIX;
 
     @Override
     public ReadOnlyKeyValueStore<Long, byte[]> worker() {
         Properties config = super.configBuilder()//
-                .put(StreamsConfig.APPLICATION_ID_CONFIG, OrderConstants.ORDER_COMMITED_TOPIC)//
+                .put(StreamsConfig.APPLICATION_ID_CONFIG, MallConstants.ORDER_COMMITED_TOPIC)//
                 .put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrap)//
                 .put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Long().getClass())//
                 .put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.ByteArray().getClass())//
                 .build();
 
         StreamsBuilder builder = new StreamsBuilder();
-        builder.stream(OrderConstants.ORDER_HANDLED_TOPIC);
+        builder.stream(MallConstants.ORDER_COMMITED_TOPIC);
 
         KafkaStreams streams = new KafkaStreams(builder.build(), new StreamsConfig(config));
         streams.start();

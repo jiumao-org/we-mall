@@ -6,7 +6,6 @@ import org.jiumao.common.constants.LoggerName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public abstract class AbstractService<T> implements RPCService<T> {
     protected static final Logger log = LoggerFactory
             .getLogger(LoggerName.Server);

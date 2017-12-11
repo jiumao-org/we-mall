@@ -1,24 +1,31 @@
 package org.jiumao.wechatMall.entity;
+
+import java.util.List;
+
 public class Goods {
-    private Object id;
-    private Long goodId;//商品编号应当有程序生成并且唯一不可变
-    private String name;//商品名称
-    private Double price;//上架价格
-    private Double nowsale;//现售价
-    private Integer num;//上架数量
-    private Integer saleNum;//销售数量
-    private String warning;//提示
-    private String detail;//商品详情考虑为HTML
-    private Integer classificationId;//商品分类，用于查找某个分类下商品
-    private String pictures;//商品图片列表，地址之间用英文;分割
-    private Integer status;//商品状态，有系统定义，参考值-1为下架，0为正常，大于1为各种自定义活动
+    private Long id;// 商品编号应当有程序生成并且唯一不可变
+    private Long userId;// 属于某个用户
+    private Object goodSerial;// 商品流水号，内部使用
+    private String name;// 商品名称
+    private Double price;// 上架价格
+    private Double nowsale;// 现售价
+    private Integer num;// 上架数量
+    private Integer saleNum;// 销售数量
+    private String warning;// 提示
+    private String detail;// 商品详情考虑为HTML
+    private Integer classificationId;// 商品分类，用于查找某个分类下商品
+    private List<String> pictures;// 商品图片列表，地址之间用英文;分割
+    private Integer status;// 商品状态，有系统定义，参考值-1为下架，0为正常，大于1为各种自定义活动
+
     public Goods() {
         super();
     }
-    public Goods(Object id,Long goodId,String name,Double price,Double nowsale,Integer num,Integer saleNum,String warning,String detail,Integer classificationId,String pictures,Integer status) {
+
+    public Goods(Object id, Long goodId, String name, Double price, Double nowsale, Integer num, Integer saleNum, String warning,
+            String detail, Integer classificationId, List<String> pictures, Integer status) {
         super();
-        this.id = id;
-        this.goodId = goodId;
+        this.goodSerial = id;
+        this.id = goodId;
         this.name = name;
         this.price = price;
         this.nowsale = nowsale;
@@ -30,20 +37,21 @@ public class Goods {
         this.pictures = pictures;
         this.status = status;
     }
+
     public Object getId() {
-        return this.id;
+        return this.goodSerial;
     }
 
     public void setId(Object id) {
-        this.id = id;
+        this.goodSerial = id;
     }
 
-    public Long getGoodId() {
-        return this.goodId;
+    public Long getGoodSerial() {
+        return this.id;
     }
 
     public void setGoodId(Long goodId) {
-        this.goodId = goodId;
+        this.id = goodId;
     }
 
     public String getName() {
@@ -110,20 +118,36 @@ public class Goods {
         this.classificationId = classificationId;
     }
 
-    public String getPictures() {
-        return this.pictures;
-    }
-
-    public void setPictures(String pictures) {
-        this.pictures = pictures;
-    }
-
     public Integer getStatus() {
         return this.status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setGoodSerial(Object goodSerial) {
+        this.goodSerial = goodSerial;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public List<String> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
     }
 
 }

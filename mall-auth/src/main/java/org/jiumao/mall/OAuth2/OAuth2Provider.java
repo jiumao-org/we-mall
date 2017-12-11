@@ -1,5 +1,6 @@
 package org.jiumao.mall.OAuth2;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jiumao.mall.OAuth2.client.ClientToken;
 import org.jiumao.mall.OAuth2.code.ReturnCode;
 import org.jiumao.mall.OAuth2.code.CodeToken;
@@ -40,6 +41,20 @@ public interface OAuth2Provider {
     static ClientToken client(String client_id, String client_secret) {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+
+    /**
+     * 根据token获取用户信息
+     * 
+     * @param token
+     * @return
+     */
+    public static boolean sign(String token) {
+        if (StringUtils.isEmpty(token)) {
+            return false;
+        } 
+        return false;
     }
 
 }

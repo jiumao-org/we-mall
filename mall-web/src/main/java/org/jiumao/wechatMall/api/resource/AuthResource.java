@@ -1,9 +1,6 @@
 package org.jiumao.wechatMall.api.resource;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -15,27 +12,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.jiumao.common.AsynHttp.AsynHttpClient;
-import org.jiumao.common.AsynHttp.AsynHttps;
 import org.jiumao.common.constants.LoggerName;
 import org.jiumao.common.domain.ErrorCode;
 import org.jiumao.common.utils.JsonUtil;
-import org.jiumao.mall.StartUp;
-import org.jiumao.mall.OAuth2.OAuth2ClientHandler;
-import org.jiumao.mall.OAuth2.OAuth2Provider;
-import org.jiumao.mall.OAuth2.client.ClientToken;
-import org.jiumao.mall.OAuth2.code.ReturnCode;
-import org.jiumao.mall.OAuth2.code.CodeToken;
 import org.jiumao.mall.OAuth2.domain.Authorize;
-import org.jiumao.mall.OAuth2.domain.GrantType;
-import org.jiumao.mall.OAuth2.domain.ResponseType;
-import org.jiumao.mall.OAuth2.implicit.ImplicitToken;
-import org.jiumao.mall.OAuth2.password.PasswdToken;
 import org.jiumao.mall.domain.Authentication;
-import org.jiumao.remote.ServiceHelper;
 import org.jiumao.remote.client.NettyRemotingClient;
-import org.jiumao.remote.common.NettyHandler;
 import org.jiumao.remote.exception.RemotingConnectException;
 import org.jiumao.remote.exception.RemotingSendRequestException;
 import org.jiumao.remote.exception.RemotingTimeoutException;

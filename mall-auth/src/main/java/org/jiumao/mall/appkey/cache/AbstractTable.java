@@ -4,6 +4,8 @@ import org.jiumao.mall.appkey.AppkeyUtil;
 import org.jiumao.mall.appkey.IdGenerator;
 
 public abstract class AbstractTable implements Table {
+    
+    protected int tableSize;
 
     protected IdGenerator<Integer> generator = AppkeyUtil.DefaultGenerator;
 
@@ -15,4 +17,14 @@ public abstract class AbstractTable implements Table {
         this.generator = generator;
     }
 
+    public int getTableSize() {
+        return tableSize;
+    }
+
+    public void setTableSize(int tableSize) {
+        this.tableSize = tableSize;
+    }
+    
+    
+    
 }

@@ -113,6 +113,8 @@ public final class JsonUtil {
     public static boolean isNull(JsonNode node) {
         return null == node || NULL_NODE == node;
     }
+    
+    //===========================================fastJson-Serializer===============================================
 
     public static final SerializerFeature[] features = //
     { SerializerFeature.WriteMapNullValue, // 输出空置字段

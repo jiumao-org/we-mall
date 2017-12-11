@@ -3,7 +3,7 @@ package org.jiumao.common.utils;
 /**
  * 对象序列化，json实现
  */
-public abstract class JsonSerializable<T> {
+public abstract class JsonSerializable {
     public String toJson() {
         return toJson(false);
     }

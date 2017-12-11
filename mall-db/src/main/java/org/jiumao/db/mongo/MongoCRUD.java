@@ -14,7 +14,13 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
 
 
-public final class MongoDBUtil {
+/**
+ * CURD 
+ * <p> if id is default for mongo use {@link ObjectId}
+ * @author ppf@jiumao.org 
+ * @date 2017/12/11
+ */
+public final class MongoCRUD {
 
     public static void insert(MongoCollection<Document> col, String... jsons) {
         if (jsons.length == 1) {
@@ -39,9 +45,11 @@ public final class MongoDBUtil {
     }
 
 
-    public static Document findById(MongoCollection<Document> col, String id) {
-        Document myDoc = col.find(Filters.eq("_id", new ObjectId(id))).first();
-        return myDoc;
+    /**
+     * Returns:T the first item or null.
+     */
+    public static Document findById(MongoCollection<Document> col, Object id) {
+        return col.find(Filters.eq("_id", id)).limit(1).first();
     }
 
 
@@ -63,23 +71,23 @@ public final class MongoDBUtil {
     }
 
 
-    public static int deleteById(MongoCollection<Document> col, String id) {
+    public static int deleteById(MongoCollection<Document> col, Object id) {
         int count = 0;
-        Bson filter = Filters.eq("_id", new ObjectId(id));
+        Bson filter = Filters.eq("_id", id);
         DeleteResult deleteResult = col.deleteOne(filter);
         count = (int) deleteResult.getDeletedCount();
         return count;
     }
 
 
-    public static Document updateById(MongoCollection<Document> col, String id, Document newdoc,
+    public static Document updateById(MongoCollection<Document> col, Object id, Document newDoc,
             boolean repalce) {
-        Bson filter = Filters.eq("_id", new ObjectId(id));
+        Bson filter = Filters.eq("_id", id);
         if (repalce)
-            col.replaceOne(filter, newdoc);
+            col.replaceOne(filter, newDoc);
         else
-            col.updateOne(filter, new Document("$set", newdoc));
-        return newdoc;
+            col.updateOne(filter, new Document("$set", newDoc));
+        return newDoc;
     }
 
 }

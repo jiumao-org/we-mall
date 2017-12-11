@@ -13,6 +13,7 @@ import org.jiumao.mall.OAuth2.code.ReturnCode;
 import org.jiumao.mall.OAuth2.domain.Authorize;
 import org.jiumao.mall.OAuth2.domain.ResponseType;
 import org.jiumao.mall.OAuth2.implicit.ImplicitToken;
+import org.jiumao.mall.appkey.AppkeyServerHandler;
 import org.jiumao.remote.ServiceHelper;
 import org.jiumao.remote.common.NettyHandler;
 import org.jiumao.remote.service.RemotingCommand;
@@ -43,8 +44,7 @@ public class StartUp {
 
 
     public static void startAppkey() {
-        NettyHandler handler = null;
-        ServiceHelper.serverStart(handler, APPKEY_PORT);
+        ServiceHelper.serverStart(new AppkeyServerHandler(), APPKEY_PORT);
     }
 
 }

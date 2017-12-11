@@ -11,6 +11,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.jiumao.common.domain.ErrorCode;
 import org.jiumao.mall.auth.Auths;
 import org.jiumao.mall.domain.User;
+import org.jiumao.remote.client.NettyRemotingClient;
+import org.jiumao.remote.exception.RemotingConnectException;
+import org.jiumao.remote.exception.RemotingSendRequestException;
+import org.jiumao.remote.exception.RemotingTimeoutException;
+import org.jiumao.remote.service.RemotingCommand;
+import org.jiumao.service.RPCServices;
+import org.jiumao.wechatMall.common.domain.ResponseUtil;
 
 
 public class AuthorizationFilter implements ContainerRequestFilter {
@@ -21,12 +28,25 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         // 获取客户端Header中提交的token
         String token = requestContext.getHeaderString("Authorization");
         if (StringUtils.isEmpty(token)) {
-            token = (String) requestContext.getProperty("token");
+            requestContext.abortWith(
+                    Response.status(401).header(HttpHeaders.WWW_AUTHENTICATE, "Barer no auth").entity(ErrorCode.AUTH_FAILED).build());
         }
-        User u = Auths.sign(token);
-        if (null == u) {
-            requestContext.abortWith(Response.status(401)
-                .header(HttpHeaders.WWW_AUTHENTICATE, "Barer no auth").entity(ErrorCode.AUTH_FAILED).build());
+        
+        // rpc
+        NettyRemotingClient client = RPCServices.getAuthService();
+        RemotingCommand request = RemotingCommand.createRequestCommand();
+        request.getExtFields().put("action", "access");
+
+        try {
+            RemotingCommand responce = client.invokeSync(request);
+            Boolean access = Boolean.valueOf(responce.getExtFields().get("access"));
+            if (!access) {
+                requestContext.abortWith(
+                    Response.status(401).header(HttpHeaders.WWW_AUTHENTICATE, "Barer no auth").entity(ErrorCode.AUTH_FAILED).build());
+            }
+        } catch (RemotingConnectException | RemotingSendRequestException | RemotingTimeoutException | InterruptedException e) {
+            requestContext.abortWith(
+                    Response.status(401).header(HttpHeaders.WWW_AUTHENTICATE, "Barer no auth").entity(ErrorCode.AUTH_FAILED).build());
         }
     }
 
