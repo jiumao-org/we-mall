@@ -50,9 +50,9 @@ public final class JsonUtil {
         return null;
     }
     
+    final static ObjectMapper m = new ObjectMapper();
     @Nullable
     public static <E> String bean2Json(E e) {
-    	ObjectMapper m = new ObjectMapper();
         try {
             return m.writeValueAsString(e);
         } catch (IOException e1) {

@@ -34,12 +34,18 @@ public class MallResource {
         Objects.requireNonNull(order);
 
         order.setCreatTime(System.currentTimeMillis());
-        Long key = IdUtil.getOrderId();
-        order.setId(key);
-        OrderProducer producer = RPCServices.getOrderService();
-        producer.send(key, order.encode());
-        
-        return new Msg(key, "订单号");
+        Long key;
+        try {
+            key = IdUtil.getOrderId(order.getUserId());
+            order.setId(key);
+            OrderProducer producer = RPCServices.getOrderService();
+            producer.send(key, order.encode());
+            return new Msg(key, "订单号");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
 
