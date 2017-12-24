@@ -60,6 +60,7 @@ public final class IdUtil {
         } catch (Exception e) {
             e.printStackTrace();
             log.error("ID 生成失败", e.getMessage());
+            throw new Error(e);
         }
     }
 
