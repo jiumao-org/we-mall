@@ -16,7 +16,7 @@ import org.jiumao.api.pay.OrderStatus;
 import org.jiumao.api.pay.PayProvider;
 import org.jiumao.common.utils.MallConstants;
 import org.jiumao.db.MongoUtil;
-import org.jiumao.db.kafka.AConsumer;
+import org.jiumao.db.kafka.AbstractConsumer;
 import org.jiumao.db.kafka.AbstractKafkaClient;
 import org.jiumao.db.mongo.MongoCRUD;
 import org.jiumao.db.mongo.MongoOperators;
@@ -24,7 +24,7 @@ import org.jiumao.wechatMall.entity.Order;
 import org.jiumao.wechatMall.entity.OrderGoods;
 
 
-public class OrderConsumer extends AConsumer<Long, byte[]> {
+public class OrderConsumer extends AbstractConsumer<Long, byte[]> {
 
     public static void main(String[] args) {
         new OrderConsumer().work();

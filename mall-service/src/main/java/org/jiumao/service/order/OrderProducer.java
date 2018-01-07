@@ -18,10 +18,10 @@ import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.BytesDeserializer;
 import org.apache.kafka.common.serialization.LongDeserializer;
 import org.jiumao.common.utils.MallConstants;
-import org.jiumao.db.kafka.AProducer;
+import org.jiumao.db.kafka.AbstractProducer;
 import org.jiumao.db.kafka.AbstractKafkaClient;
 
-public class OrderProducer extends AProducer<Long, byte[]> {
+public class OrderProducer extends AbstractProducer<Long, byte[]> {
 
     public OrderProducer() {
         super(MallConstants.ORDER_COMMITED_TOPIC);

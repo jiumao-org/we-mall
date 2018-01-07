@@ -29,7 +29,7 @@ public class Order extends JsonSerializable {
     }
 
     // 商品详情
-    private List<OrderGoods> goods = Collections.emptyList();
+    private List<OrderGoods> goods ;
 
     public Order() {
         super();

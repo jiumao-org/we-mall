@@ -1,4 +1,7 @@
 package org.jiumao.wechatMall.entity;
+
+import java.util.List;
+
 public class OrderGoods {
     private Object id;
     private Long orderId;//商品订单号
@@ -9,6 +12,8 @@ public class OrderGoods {
     private String name;//商品名，方便简单查看，不用回查商品
     private Integer classification;//商品分类，用于订单报表统计
     private Double totalPrice;//总价
+    private Long saleId;//商家ID
+    private List<Classification> classifications;//商品销售的分类器：促销、活动、属于哪个分类下（3c、食品）
     public OrderGoods() {
         super();
     }
@@ -94,6 +99,18 @@ public class OrderGoods {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+    public List<Classification> getClassifications() {
+        return classifications;
+    }
+    public void setClassifications(List<Classification> classifications) {
+        this.classifications = classifications;
+    }
+    public Long getSaleId() {
+        return saleId;
+    }
+    public void setSaleId(Long saleId) {
+        this.saleId = saleId;
     }
 
 }

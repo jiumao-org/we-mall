@@ -7,7 +7,7 @@ import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
  * @author ppf@jiumao.org 
  * @date 2017/12/10
  */
-public abstract class ATable<K,V> extends AbstractKafkaClient<ReadOnlyKeyValueStore<K,V>> {
+public abstract class AbstractTable<K,V> extends AbstractKafkaClient<ReadOnlyKeyValueStore<K,V>> {
     /** 状态topic存储后缀 */
     protected static final String STATE_TABLE_POSTFIX = "-state-store";
     /** global-table存储后缀 */
@@ -20,4 +20,6 @@ public abstract class ATable<K,V> extends AbstractKafkaClient<ReadOnlyKeyValueSt
      * @param k
      */
     public abstract V get(K k);
+    
+    
 }
