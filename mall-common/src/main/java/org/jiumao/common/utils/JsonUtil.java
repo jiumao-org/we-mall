@@ -1,15 +1,19 @@
 package org.jiumao.common.utils;
 
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.NullNode;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.Charset;
 import java.util.StringTokenizer;
 
 import javax.annotation.Nullable;
@@ -46,9 +50,9 @@ public final class JsonUtil {
         return null;
     }
     
+    final static ObjectMapper m = new ObjectMapper();
     @Nullable
     public static <E> String bean2Json(E e) {
-    	ObjectMapper m = new ObjectMapper();
         try {
             return m.writeValueAsString(e);
         } catch (IOException e1) {
@@ -108,6 +112,56 @@ public final class JsonUtil {
      */
     public static boolean isNull(JsonNode node) {
         return null == node || NULL_NODE == node;
+    }
+    
+    //===========================================fastJson-Serializer===============================================
+
+    public static final SerializerFeature[] features = //
+    { SerializerFeature.WriteMapNullValue, // 输出空置字段
+     SerializerFeature.WriteNullListAsEmpty,// list字段如果为null，输出为[]，而不是null
+     SerializerFeature.WriteNullNumberAsZero,// 数值字段如果为null，输出为0，而不是null
+     SerializerFeature.WriteNullBooleanAsFalse,// Boolean字段如果为null，输出为false，而不是null
+     SerializerFeature.WriteNullStringAsEmpty // 字符类型字段如果为null，输出为""，而不是null
+    };
+
+    public static String toJson(final Object obj, boolean prettyFormat) {
+        return JSON.toJSONString(obj, prettyFormat);
+    }
+
+
+    public static <T> T fromJson(String json, Class<T> classOfT) {
+        return JSON.parseObject(json, classOfT);
+    }
+
+
+    public static byte[] toBytes(final Object obj) {
+        return JSON.toJSONBytes(obj, features);
+    }
+
+
+    public static byte[] encode(final Object obj) {
+        final String json = toJson(obj, false);
+        if (json != null) {
+            return json.getBytes(Charset.forName("UTF-8"));
+        }
+        return null;
+    }
+
+
+    public static <T> T decode(final byte[] data, Class<T> classOfT) {
+        final String json = toJson(data);
+        return fromJson(json, classOfT);
+    }
+
+
+    /**
+     * 直接解析json
+     */
+    public static String toJson(final byte[] data) {
+        if (ArrayUtils.isNotEmpty(data)) {
+            return new String(data, Charset.forName("UTF-8"));
+        }
+        return "";
     }
 
 }

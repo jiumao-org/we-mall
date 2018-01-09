@@ -13,7 +13,6 @@ public class ModuleTest {
 		for (int i = 0; i < 100; i++) {
 			IdUtil.getCardId();
 			IdUtil.getUserId();
-			IdUtil.backup();
 		}
 	}
 	

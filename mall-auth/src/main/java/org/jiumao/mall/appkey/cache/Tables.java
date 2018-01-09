@@ -2,8 +2,14 @@ package org.jiumao.mall.appkey.cache;
 
 import org.jiumao.mall.appkey.cache.Table.Row;
 
-
+/**
+ * Table 相关辅助操作
+ * @author ppf@jiumao.org 
+ * @date 2017/12/11
+ */
 public final class Tables {
+    
+    public static final String ACCESS_PATH_SPLIT =",";
     
     public static final Table EmptyTable = new EmptyTable();
     public static final Row EmptyRow = new EmptyRow();

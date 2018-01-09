@@ -10,11 +10,11 @@ import org.jiumao.common.utils.JsonUtil;
  */
 public class Msg {
 
-    public int code;
+    public Object code;
     public String msg;
 
 
-    public Msg(int code, String msg) {
+    public Msg(Object code, String msg) {
         super();
         this.code = code;
         this.msg = msg;

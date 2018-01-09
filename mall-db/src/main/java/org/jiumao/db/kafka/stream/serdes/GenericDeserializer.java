@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
-import org.jiumao.common.utils.JsonSerializable;
+import org.jiumao.common.utils.JsonUtil;
 
 
 /**
@@ -44,7 +44,7 @@ public class GenericDeserializer<T> implements Deserializer<T> {
 			return null;
 		}
 		try {
-			return JsonSerializable.decode(data, type);
+			return JsonUtil.decode(data, type);
 		} catch (Exception ex) {
 			throw new SerializationException(ex);
 		}

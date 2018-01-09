@@ -9,6 +9,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.jiumao.common.constants.LoggerName;
+import org.jiumao.common.domain.Msg;
+import org.jiumao.common.utils.JsonUtil;
+import org.jiumao.mall.appkey.AppkeyDetail;
+import org.jiumao.remote.client.NettyRemotingClient;
+import org.jiumao.remote.exception.RemotingConnectException;
+import org.jiumao.remote.exception.RemotingSendRequestException;
+import org.jiumao.remote.exception.RemotingTimeoutException;
+import org.jiumao.remote.service.RemotingCommand;
+import org.jiumao.service.RPCServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -23,8 +32,20 @@ public class ApiResource {
 
     @GET
     @Path("appkey")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getAppkey(@QueryParam("msg") @DefaultValue("hello world") String msg) {
-        return msg;
+    public Msg getAppkey(AppkeyDetail detail) {
+
+        NettyRemotingClient client = RPCServices.getAppkeyService();
+        RemotingCommand request = RemotingCommand.createRequestCommand();
+        request.setBody(JsonUtil.toBytes(detail));
+        request.getExtFields().put("action", "insert");
+
+        try {
+            RemotingCommand responce = client.invokeSync(request);
+            return new Msg(responce.getExtFields().get("appkey"), "appkey");
+        } catch (RemotingConnectException | RemotingSendRequestException | RemotingTimeoutException | InterruptedException e) {
+            e.printStackTrace();
+            log.error("",e);
+        }
+        return new Msg(-1, "appkey");
     }
 }

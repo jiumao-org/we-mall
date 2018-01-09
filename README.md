@@ -39,11 +39,18 @@ Xingkang Wang | <wxk@jiumao.org>
 ### skills
 * development environment
 * technology stack 
-* Jersey 2
-* Spring 4
-* Mybatis
-* MySql
-* font-end vue html5
+* Jersey 2 or RESTful
+* Spring 4 & Mybatis
+* RPC such as :netty/protobuf/bytes to Object
+* Message Quene : rocketMQ or kafka 
+* MySql or MongoDB
+* font-end vue html5 & nodejs
+---
+* data science
+  1. streaming program like Apache Flink/Spark/Storm or kafka streaming
+  2. machine learning or Data analysis
+  3. TensorFlow or Caffe
+  4. python etc. 
 #### expand
 - [ ] 1. 结构化数据用MySQL，详细信息用Mongodb做为cache。
   - 例如：用户基本信息用mysql，用户的详细信息用mongodb存储，通过用户唯一ID作为桥梁；
