@@ -1,8 +1,5 @@
 package org.mall.sexy.text;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
