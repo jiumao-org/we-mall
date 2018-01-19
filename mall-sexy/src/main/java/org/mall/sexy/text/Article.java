@@ -81,31 +81,31 @@ public class Article {
     }
 
 
-    public List<String> extracWord(String article, Map<String, List<String>> map) throws Exception {
+    /**
+     * 文章提取关键词
+     * 
+     * @param article 正文
+     * @param map 停用词等
+     * @return
+     * @throws Exception
+     */
+    public WordSortedSet extracWord(String article, Map<String, WordSortedSet> map) {
 
-        List<String> list = new ArrayList<String>();
+        WordSortedSet list = new WordSortedSet();
 
-        List<String> list_c = map.get(SexyConstans.STOP_CHINESE);
-        List<String> list_e = map.get(SexyConstans.STOP_ENGLISH);
+        WordSortedSet list_c = map.get(SexyConstans.STOP_CHINESE);
+        WordSortedSet list_e = map.get(SexyConstans.STOP_ENGLISH);
 
         Result parse = ToAnalysis.parse(article);
         for (Term term : parse) {
-            boolean flag = true;
-
-            String str = term.getName().trim();
-
-            for (String str_c : list_c) {
-                if (str_c.equals(str)) flag = false;
+            String w  = term.getName().trim();
+            if (list_c.contains(w)) {
+                continue;
             }
-
-            for (String str_e : list_e) {
-                if (str_e.equals(str)) flag = false;
+            if (list_e.contains(w)) {
+                continue;
             }
-
-            if (str == "") flag = false;
-
-            if (flag) list.add(str);
-
+            list.add(w);
         }
 
         return list;
