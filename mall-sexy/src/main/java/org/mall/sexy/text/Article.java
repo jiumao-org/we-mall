@@ -85,8 +85,8 @@ public class Article {
 
         List<String> list = new ArrayList<String>();
 
-        List<String> list_c = map.get(MacroDef.STOP_CHINESE);
-        List<String> list_e = map.get(MacroDef.STOP_ENGLISH);
+        List<String> list_c = map.get(SexyConstans.STOP_CHINESE);
+        List<String> list_e = map.get(SexyConstans.STOP_ENGLISH);
 
         Result parse = ToAnalysis.parse(article);
         for (Term term : parse) {
