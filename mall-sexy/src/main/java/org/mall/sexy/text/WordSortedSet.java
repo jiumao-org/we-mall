@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.TreeMap;
 
+
 /**
  * 用于统计词频和快速查找过滤
  * <p>
@@ -14,26 +15,34 @@ import java.util.TreeMap;
  * @date 2018/01/19
  */
 public class WordSortedSet extends AbstractSet<String> {
-    private TreeMap<String, Integer> m = new TreeMap<>(WordComparator);
+    private TreeMap<String, Integer> m;
+    private static Comparator<String> wordComparator = createComparator(true);
 
     public WordSortedSet() {
-        super();
+        m = new TreeMap<>(wordComparator);
     }
 
-    private static Comparator<String> WordComparator = (String e1, String e2) -> {
-
-        if (e1.length() == e2.length()) {
-            if (e1.hashCode() == e2.hashCode()) {
-                int h1 = WordSortedSet.fastELFHash(e1);
-                int h2 = WordSortedSet.fastELFHash(e2);
+    /**
+     * 根据字符串长度选择不同的比较器
+     * 
+     * @param isWord 是否是短语或长度很小的字符串
+     * @return
+     */
+    public static Comparator<String> createComparator(boolean isWord) {
+        return (String e1, String e2) -> {
+            if (e1 == e2) return 0;
+            if (e1.length() == e2.length()) {
+                // hashcode
+                int h1 = isWord ? WordSortedSet.fastHash(e1) : e1.hashCode();
+                int h2 = isWord ? WordSortedSet.fastHash(e2) : e2.hashCode();
                 if (h1 == h2) {
                     char c1 = '0', c2 = '0';
                     for (int i = 0; i < e1.length(); i++) {
                         c1 = e1.charAt(i);
                         c2 = e1.charAt(i);
-                        if (c1==c2) {
+                        if (c1 == c2) {
                             continue;
-                        }else {
+                        } else {
                             return c1 > c2 ? -1 : 1;
                         }
                     }
@@ -41,30 +50,27 @@ public class WordSortedSet extends AbstractSet<String> {
                 } else {
                     return h1 > h2 ? -1 : 1;
                 }
-
             } else {
-                return e1.hashCode() > e2.hashCode() ? -1 : 1;
+                return e1.length() > e2.length() ? -1 : 1;
             }
-        } else {
-            return e1.length() > e2.length() ? -1 : 1;
-        }
-    };
+        };
+    }
+
+
+
+    static final int x = 0B111111;
 
     /**
+     * 用于短字符串hash生成
      * <ol>
      * <li>遍历字符串每个字符
-     * <li>x获取了hash高四位，影响下次生成
+     * <li>获取hash高四位，影响下次生成
      * 
      */
-    public static int fastELFHash(String s) {
+    public static int fastHash(String s) {
         int hash = 0;
-        int x = 0;
         for (int i = 0; i < s.length(); i++) {
-            hash = (hash << 4) + s.charAt(i);
-            if ((x = hash & 0x7f000_000) != 0) {
-                hash ^= (x >> 24);
-                hash &= ~x;
-            }
+            hash += s.charAt(i) << (i << 0B111111);
         }
         return (hash & 0x7fffffff);
     }
@@ -92,10 +98,10 @@ public class WordSortedSet extends AbstractSet<String> {
     public int size() {
         return m.size();
     }
-    
+
     @Override
     public boolean contains(Object key) {
-        return m.containsKey((String)key);
+        return m.containsKey((String) key);
     }
 
 }
