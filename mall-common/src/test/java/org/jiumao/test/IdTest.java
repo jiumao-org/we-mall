@@ -1,5 +1,10 @@
 package org.jiumao.test;
 
+import static org.junit.Assert.*;
+
+import org.apache.commons.lang3.RandomUtils;
+import org.junit.Test;
+
 public class IdTest {
     public static void main(String[] args) {
         long out = 0;
@@ -15,5 +20,11 @@ public class IdTest {
         }
         System.out.println(out);
 
+    }
+    
+    
+    @Test
+    public void testID() throws Exception {
+        System.out.println(RandomUtils.nextLong(0xFFFFFF, 0xFFFFFF_F));
     }
 }
