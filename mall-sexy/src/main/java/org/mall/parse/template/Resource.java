@@ -7,20 +7,26 @@ import java.util.List;
 import org.mall.parse.Format;
 
 public class Resource {
+    // 网站 资源
     private String source;// http url 或者 其它数据源
     private List<String> params;// url 变化参数，用于拼接字符串
     private Format<?> format;
     private Type type;
     private Result result;
-    private boolean isPage;
+    
+    // 资源类 抓url
+    private PageTurn pageTurn;
+    private MatchedUrl matched;
+    
 
+    // 解析规则
     private List<Term> terms = Collections.emptyList();
     private List<Resource> resource = Collections.emptyList();
 
     public Resource(String source) {
         super();
         this.source = source;
-        this.resource = new ArrayList<>(1);
+        this.params = new ArrayList<>(4);
     }
 
     public static enum Type {
@@ -31,7 +37,7 @@ public class Resource {
         Context;
     }
     public static enum Result {
-        Json, Html, Text;
+        Json, Html, Text, Url;
     }
 
     public String getSource() {
@@ -74,22 +80,32 @@ public class Resource {
         this.result = result;
     }
 
-    public boolean isPage() {
-        return isPage;
-    }
-
-    public void setPage(boolean isPage) {
-        this.isPage = isPage;
-    }
-
     public List<Term> addTerm(Term t) {
+        if (terms.size() == 0) this.terms = new ArrayList<>(1);
         if (null != t) terms.add(t);
         return terms;
     }
 
     public List<Resource> addResource(Resource r) {
+        if (resource.size() == 0) this.resource = new ArrayList<>(1);
         if (null != r) this.resource.add(r);
         return resource;
+    }
+
+    public PageTurn getPageTurn() {
+        return pageTurn;
+    }
+
+    public void setPageTurn(PageTurn pageTurn) {
+        this.pageTurn = pageTurn;
+    }
+
+    public MatchedUrl getMatched() {
+        return matched;
+    }
+
+    public void setMatched(MatchedUrl matched) {
+        this.matched = matched;
     }
 
 }
