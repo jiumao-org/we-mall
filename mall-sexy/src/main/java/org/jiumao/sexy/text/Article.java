@@ -1,4 +1,4 @@
-package org.mall.sexy.text;
+package org.jiumao.sexy.text;
 
 import java.util.ArrayList;
 import java.util.List;

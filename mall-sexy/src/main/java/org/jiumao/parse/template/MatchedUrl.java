@@ -1,4 +1,7 @@
-package org.mall.parse.template;
+package org.jiumao.parse.template;
+
+import org.apache.commons.lang3.StringUtils;
+
 
 /**
  * 基于广度优先，抓取整站URL
@@ -10,9 +13,9 @@ package org.mall.parse.template;
  */
 public class MatchedUrl {
 
-    private String startWith;
-    private String endWith;
-    private String contains;
+    private String startWith = "";
+    private String endWith = "";
+    private String contains = "";
 
     private String regex;// 正则表达式
     private int depth = 3;// 抓取深度，
@@ -61,6 +64,11 @@ public class MatchedUrl {
         this.depth = depth;
     }
 
-
+    public static boolean isMatched(MatchedUrl matched, String url) {
+        if (StringUtils.isEmpty(url)) return false;
+        return url.startsWith(matched.getStartWith())//
+                || url.endsWith(matched.getEndWith())//
+                || url.contains(matched.getContains());
+    }
 
 }

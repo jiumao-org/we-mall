@@ -1,4 +1,4 @@
-package org.mall.sexy.text;
+package org.jiumao.sexy.text;
 
 import java.util.AbstractSet;
 import java.util.Comparator;

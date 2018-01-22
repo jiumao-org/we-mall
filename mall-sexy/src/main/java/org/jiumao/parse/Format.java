@@ -1,5 +1,5 @@
 
-package org.mall.parse;
+package org.jiumao.parse;
 
 import java.util.List;
 

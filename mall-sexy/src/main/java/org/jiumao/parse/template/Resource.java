@@ -1,23 +1,36 @@
-package org.mall.parse.template;
+package org.jiumao.parse.template;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.mall.parse.Format;
+import org.apache.commons.lang3.StringUtils;
+import org.jiumao.parse.Format;
 
 public class Resource {
     // 网站 资源
     private String source;// http url 或者 其它数据源
-    private List<String> params;// url 变化参数，用于拼接字符串
-    private Format<?> format;
-    private Type type;
-    private Result result;
-    
+    private List<String> params = Collections.emptyList();// url 变化参数，用于拼接字符串
+    private Format<?> format = Template.stringFormat;
+    private Type type = Type.HttpGet;
+    private Result result = Result.Html;
+
     // 资源类 抓url
     private PageTurn pageTurn;
     private MatchedUrl matched;
-    
+
+
+    public List<Term> getTerms() {
+        return terms;
+    }
+
+    public void setTerms(List<Term> terms) {
+        this.terms = terms;
+    }
+
+    public List<Resource> getResource() {
+        return resource;
+    }
 
     // 解析规则
     private List<Term> terms = Collections.emptyList();
@@ -40,44 +53,49 @@ public class Resource {
         Json, Html, Text, Url;
     }
 
-    public String getSource() {
+    public String getUrl() {
         return source;
     }
 
-    public void setSource(String source) {
+    public Resource setSource(String source) {
         this.source = source;
+        return this;
     }
 
     public List<String> getParams() {
         return params;
     }
 
-    public void setParams(List<String> params) {
+    public Resource setParams(List<String> params) {
         this.params = params;
+        return this;
     }
 
     public Format<?> getFormat() {
         return format;
     }
 
-    public void setFormat(Format<?> format) {
+    public Resource setFormat(Format<?> format) {
         this.format = format;
+        return this;
     }
 
     public Type getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public Resource setType(Type type) {
         this.type = type;
+        return this;
     }
 
     public Result getResult() {
         return result;
     }
 
-    public void setResult(Result result) {
+    public Resource setResult(Result result) {
         this.result = result;
+        return this;
     }
 
     public List<Term> addTerm(Term t) {
@@ -96,16 +114,19 @@ public class Resource {
         return pageTurn;
     }
 
-    public void setPageTurn(PageTurn pageTurn) {
+    public Resource setPageTurn(PageTurn pageTurn) {
         this.pageTurn = pageTurn;
+        return this;
     }
 
     public MatchedUrl getMatched() {
         return matched;
     }
 
-    public void setMatched(MatchedUrl matched) {
+    public Resource setMatched(MatchedUrl matched) {
         this.matched = matched;
+        return this;
     }
+
 
 }

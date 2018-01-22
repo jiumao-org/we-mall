@@ -1,4 +1,4 @@
-package org.mall.parse;
+package org.jiumao.parse;
 
 public class HtmlParser {
 

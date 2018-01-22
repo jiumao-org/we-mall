@@ -1,4 +1,4 @@
-package org.mall.parse.template;
+package org.jiumao.parse.template;
 
 /**
  * 网站资源页，翻页属性
