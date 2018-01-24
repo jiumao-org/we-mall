@@ -16,6 +16,7 @@ public class MatchedUrl {
     private String startWith = "";
     private String endWith = "";
     private String contains = "";
+    
 
     private String regex;// 正则表达式
     private int depth = 3;// 抓取深度，

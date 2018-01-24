@@ -8,12 +8,14 @@ package org.jiumao.parse.template;
  */
 public class PageTurn {
 
-    int begin;
-    int end;
+   private int begin;
+   private int end;
+   private int currentPage;
+   private String pageMould;// baidu.com?page=news_%s&w=ppt
+   private NextText text = NextText.NextCn;
 
-
-    enum NextText {
-        NextCn("下一页"),NextEn("next");
+    public static enum NextText {
+        NextCn("下一页"), NextEn("next");
         private String text;
 
 
@@ -27,6 +29,48 @@ public class PageTurn {
             return text;
         }
 
+    }
+    
+    // setters/getters
+
+    public int getBegin() {
+        return begin;
+    }
+
+    public void setBegin(int begin) {
+        this.begin = begin;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public String getPageMould() {
+        return pageMould;
+    }
+
+    public void setPageMould(String pageMould) {
+        this.pageMould = pageMould;
+    }
+
+    public NextText getText() {
+        return text;
+    }
+
+    public void setText(NextText text) {
+        this.text = text;
     }
 
 

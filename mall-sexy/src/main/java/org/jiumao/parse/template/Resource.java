@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.jiumao.common.utils.CheckUtil;
 import org.jiumao.parse.Format;
+
 
 public class Resource {
     // 网站 资源
@@ -17,7 +18,7 @@ public class Resource {
 
     // 资源类 抓url
     private PageTurn pageTurn;
-    private MatchedUrl matched;
+    private List<MatchedUrl> matched;
 
 
     public List<Term> getTerms() {
@@ -119,14 +120,35 @@ public class Resource {
         return this;
     }
 
-    public MatchedUrl getMatched() {
+    public List<MatchedUrl> getMatched() {
         return matched;
     }
 
-    public Resource setMatched(MatchedUrl matched) {
+    public void setMatched(List<MatchedUrl> matched) {
         this.matched = matched;
-        return this;
     }
 
+    public String getSource() {
+        return source;
+    }
+
+    public void setResource(List<Resource> resource) {
+        this.resource = resource;
+    }
+
+    public boolean isMatchUrl(String url) {
+        for (MatchedUrl m : matched) {
+            if (MatchedUrl.isMatched(m, url)) return true;
+        }
+        return false;
+    }
+
+    public Resource addMatched(MatchedUrl match) {
+        if (CheckUtil.isEmpty(matched)) {
+            matched = new ArrayList<>(2);
+        }
+        matched.add(match);
+        return this;
+    }
 
 }

@@ -68,7 +68,7 @@ public class Template {
                 Set<String> us = new HashSet<>();
                 for (Element e : eles) {
                     String url = e.absUrl("href");
-                    if (MatchedUrl.isMatched(source.getMatched(), url)) {
+                    if (source.isMatchUrl(url)) {
                         us.add(url);
                     }
                 }
