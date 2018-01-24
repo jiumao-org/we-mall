@@ -41,7 +41,7 @@ public class App {
         Resource source = Template.createResource(url);
         MatchedUrl matched = new MatchedUrl();
         matched.setContains("");
-        source.setMatched(matched)//
+        source.addMatched(matched)//
                 .setResult(Result.Url)//
                 .addTerm(new Term("list", "ul > li > a[href]"));
         Map<String, Set<String>> urls = Template.getUrls(source);
