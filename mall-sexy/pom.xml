@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<description>Against Pornography</description>
+	<parent>
+		<groupId>org.jiumao</groupId>
+		<artifactId>wechat-mall</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>mall-sexy</artifactId>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>mall-common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<!-- 中文分词，简单分词和只能分词 -->
+		<dependency>
+			<groupId>com.janeluo</groupId>
+			<artifactId>ikanalyzer</artifactId>
+			<version>2012_u6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ansj</groupId>
+			<artifactId>ansj_seg</artifactId>
+			<version>5.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nlpcn</groupId>
+			<artifactId>nlp-lang</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+
+	</dependencies>
+</project>
