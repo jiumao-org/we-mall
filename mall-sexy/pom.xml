@@ -19,6 +19,11 @@
 			<artifactId>mall-common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>mall-db</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 		<!-- 中文分词，简单分词和只能分词 -->
 		<dependency>

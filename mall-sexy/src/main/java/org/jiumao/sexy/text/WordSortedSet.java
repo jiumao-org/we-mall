@@ -28,7 +28,7 @@ public class WordSortedSet {
     @SuppressWarnings("unchecked")
     public WordSortedSet(int initialCapacity, boolean isWord) {
         this.isShortChar = isWord;
-        this.initialCapacity = Math.max(8, initialCapacity);
+        this.initialCapacity = Math.max(7, initialCapacity);
         this.house = new TreeMap[initialCapacity];
 
         for (int i = 0; i < house.length; i++) {
@@ -37,7 +37,7 @@ public class WordSortedSet {
     }
 
     public WordSortedSet() {
-        this(8, true);
+        this(17, true);
     }
 
 

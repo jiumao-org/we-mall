@@ -22,7 +22,7 @@ public class HashMapRedis extends BaseRedis<BinaryJedis> {
     }
 
 
-    public HashMapRedis(Pool<BinaryJedis> jedisPool, String hmName) {
+    public HashMapRedis(Pool jedisPool, String hmName) {
         super(jedisPool);
         this.hmName = hmName;
         this.hmNameBs = hmName.getBytes();

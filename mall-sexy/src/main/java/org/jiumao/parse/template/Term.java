@@ -17,7 +17,7 @@ public class Term {
         super();
         this.name = name;
         this.path = path;
-        this.format = Template.stringFormat;
+        this.format = Templates.stringFormat;
     }
 
     public String getPath() {

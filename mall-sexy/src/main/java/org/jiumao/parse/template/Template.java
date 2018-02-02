@@ -8,13 +8,13 @@ import org.jiumao.common.utils.CheckUtil;
 import org.jiumao.parse.Format;
 
 
-public class Resource {
+public class Template {
     // 网站 资源
-    private String source;// http url 或者 其它数据源
     private List<String> params = Collections.emptyList();// url 变化参数，用于拼接字符串
-    private Format<?> format = Template.stringFormat;
+    private Format<?> format = Templates.stringFormat;
     private Type type = Type.HttpGet;
     private Result result = Result.Html;
+    private String regrex;
 
     // 资源类 抓url
     private PageTurn pageTurn;
@@ -29,17 +29,17 @@ public class Resource {
         this.terms = terms;
     }
 
-    public List<Resource> getResource() {
+    public List<Template> getResource() {
         return resource;
     }
 
     // 解析规则
     private List<Term> terms = Collections.emptyList();
-    private List<Resource> resource = Collections.emptyList();
+    private List<Template> resource = Collections.emptyList();
 
-    public Resource(String source) {
+    public Template(String regrex) {
         super();
-        this.source = source;
+        this.regrex = regrex;
         this.params = new ArrayList<>(4);
     }
 
@@ -51,23 +51,15 @@ public class Resource {
         Context;
     }
     public static enum Result {
-        Json, Html, Text, Url;
+        Json, Html, Text, Url,Page;
     }
 
-    public String getUrl() {
-        return source;
-    }
-
-    public Resource setSource(String source) {
-        this.source = source;
-        return this;
-    }
 
     public List<String> getParams() {
         return params;
     }
 
-    public Resource setParams(List<String> params) {
+    public Template setParams(List<String> params) {
         this.params = params;
         return this;
     }
@@ -76,7 +68,7 @@ public class Resource {
         return format;
     }
 
-    public Resource setFormat(Format<?> format) {
+    public Template setFormat(Format<?> format) {
         this.format = format;
         return this;
     }
@@ -85,7 +77,7 @@ public class Resource {
         return type;
     }
 
-    public Resource setType(Type type) {
+    public Template setType(Type type) {
         this.type = type;
         return this;
     }
@@ -94,7 +86,7 @@ public class Resource {
         return result;
     }
 
-    public Resource setResult(Result result) {
+    public Template setResult(Result result) {
         this.result = result;
         return this;
     }
@@ -105,7 +97,7 @@ public class Resource {
         return terms;
     }
 
-    public List<Resource> addResource(Resource r) {
+    public List<Template> addResource(Template r) {
         if (resource.size() == 0) this.resource = new ArrayList<>(1);
         if (null != r) this.resource.add(r);
         return resource;
@@ -115,7 +107,7 @@ public class Resource {
         return pageTurn;
     }
 
-    public Resource setPageTurn(PageTurn pageTurn) {
+    public Template setPageTurn(PageTurn pageTurn) {
         this.pageTurn = pageTurn;
         return this;
     }
@@ -128,11 +120,7 @@ public class Resource {
         this.matched = matched;
     }
 
-    public String getSource() {
-        return source;
-    }
-
-    public void setResource(List<Resource> resource) {
+    public void setResource(List<Template> resource) {
         this.resource = resource;
     }
 
@@ -143,12 +131,20 @@ public class Resource {
         return false;
     }
 
-    public Resource addMatched(MatchedUrl match) {
+    public Template addMatched(MatchedUrl match) {
         if (CheckUtil.isEmpty(matched)) {
             matched = new ArrayList<>(2);
         }
         matched.add(match);
         return this;
+    }
+
+    public String getRegrex() {
+        return regrex;
+    }
+
+    public void setRegrex(String regrex) {
+        this.regrex = regrex;
     }
 
 }

@@ -20,7 +20,7 @@ public class SetRedis extends BaseRedis<BinaryJedis>{
     }
 
 
-    public SetRedis(Pool<BinaryJedis> jedisPool, String setName) {
+    public SetRedis(Pool jedisPool, String setName) {
         super(jedisPool);
         this.setName = setName;
         this.setNameBs = setName.getBytes();
