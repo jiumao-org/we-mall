@@ -1,13 +1,9 @@
 package org.jiumao.sexy.text;
 
-import java.util.AbstractSet;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
-import org.nlpcn.commons.lang.util.StringUtil;
 
 
 /**
