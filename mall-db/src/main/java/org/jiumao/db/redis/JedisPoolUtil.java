@@ -8,16 +8,15 @@ import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedisPool;
 
 
-public final class PoolUtil {
+public final class JedisPoolUtil {
     private static int maxCount = 2000;
     private static long MaxWait = 2000l;
     private static int maxIdle = 500;
-    private static JedisPoolConfig config;
+    private static JedisPoolConfig config = defaultPoolConfig();
 
 
     public static JedisPool DefaultPool(String host, int port, String pwd) {
         return new JedisPool(config, host, port, maxIdle, pwd, 0, false);
-
     }
 
 

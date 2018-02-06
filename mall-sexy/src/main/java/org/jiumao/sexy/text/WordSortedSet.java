@@ -1,13 +1,9 @@
 package org.jiumao.sexy.text;
 
-import java.util.AbstractSet;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
-import org.nlpcn.commons.lang.util.StringUtil;
 
 
 /**
@@ -32,7 +28,7 @@ public class WordSortedSet {
     @SuppressWarnings("unchecked")
     public WordSortedSet(int initialCapacity, boolean isWord) {
         this.isShortChar = isWord;
-        this.initialCapacity = Math.max(8, initialCapacity);
+        this.initialCapacity = Math.max(7, initialCapacity);
         this.house = new TreeMap[initialCapacity];
 
         for (int i = 0; i < house.length; i++) {
@@ -41,7 +37,7 @@ public class WordSortedSet {
     }
 
     public WordSortedSet() {
-        this(8, true);
+        this(17, true);
     }
 
 
