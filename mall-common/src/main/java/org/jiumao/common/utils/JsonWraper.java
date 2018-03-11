@@ -18,7 +18,7 @@ public final class JsonWraper {
     }
 
 
-    public static JsonWraper toJsonWraper(JsonNode node) {
+    public static JsonWraper of(JsonNode node) {
         JsonWraper wraper = new JsonWraper();
         wraper.nodeThis = node;
         wraper.root = node;

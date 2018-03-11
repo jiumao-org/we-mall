@@ -77,10 +77,10 @@ public final class JsonUtil {
         return NULL_NODE;
     }
     
-    public static JsonWraper jsonWraper(String json){
+    public static JsonWraper toJsonWraper(String json){
 		ObjectMapper m = new ObjectMapper();// 复用
 		JsonNode tree = JsonUtil.jsonTree(m, json);
-		return JsonWraper.toJsonWraper(tree);
+		return JsonWraper.of(tree);
     }
 
     /**
