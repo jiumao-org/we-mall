@@ -1,4 +1,4 @@
-package org.jiumao.sexy;
+package org.mall.sexy;
 
 import static org.junit.Assert.*;
 
