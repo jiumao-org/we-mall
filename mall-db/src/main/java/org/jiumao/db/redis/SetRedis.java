@@ -20,7 +20,8 @@ public class SetRedis extends BaseRedis<BinaryJedis>{
     }
 
 
-    public SetRedis(Pool jedisPool, String setName) {
+    @SuppressWarnings("unchecked")
+    public SetRedis(@SuppressWarnings("rawtypes") Pool jedisPool, String setName) {
         super(jedisPool);
         this.setName = setName;
         this.setNameBs = setName.getBytes();

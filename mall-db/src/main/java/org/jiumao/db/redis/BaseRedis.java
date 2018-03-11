@@ -1,9 +1,5 @@
 package org.jiumao.db.redis;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import redis.clients.jedis.BinaryJedis;
 import redis.clients.util.Pool;
