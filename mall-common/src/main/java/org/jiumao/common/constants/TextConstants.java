@@ -4,7 +4,7 @@ package org.jiumao.common.constants;
  * @author ppf@jiumao.org
  * @date 2017年9月4日
  */
-public final  class ParseConstants {
+public final  class TextConstants {
 
 	
 
