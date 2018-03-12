@@ -11,10 +11,8 @@ import java.util.Map;
 /**
  * Created by 13682 on 2017/11/14.
  * 
- * @deprecated 这个跟反射相关，谁有时间改的通用一些
  */
-@Deprecated
-public class FileNameUtil {
+public class ObjectUtil {
     public static List<Map> getFiledNamesAndValues(Object obj) {
         Field[] fields = obj.getClass().getDeclaredFields();
         String[] fieldNames = new String[fields.length];
