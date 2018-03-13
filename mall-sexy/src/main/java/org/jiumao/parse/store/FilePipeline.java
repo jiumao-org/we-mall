@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * 将数据存入文件
  * 
@@ -14,7 +16,7 @@ public class FilePipeline implements Pipeline {
 
 
     // tmp for write
-    private String json;
+    private JSONObject json;
 
     private String fileName;
     private FileWriter w;
@@ -22,7 +24,7 @@ public class FilePipeline implements Pipeline {
 
     public FilePipeline(String fileName) throws IOException {
         super();
-        this.fileName = fileName;
+        this.setFileName(fileName);
         w = new FileWriter(fileName, true);
         buffW = new BufferedWriter(w);
     }
@@ -30,7 +32,7 @@ public class FilePipeline implements Pipeline {
 
 
     @Override
-    public void accept(String json) {
+    public void accept(JSONObject json) {
         this.json = json;
     }
 
@@ -38,8 +40,21 @@ public class FilePipeline implements Pipeline {
 
     @Override
     public void write() throws IOException {
-        buffW.write(json);
+        buffW.write(json.toJSONString());
         buffW.newLine();
+        buffW.flush();
+    }
+
+
+
+    public String getFileName() {
+        return fileName;
+    }
+
+
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
 }

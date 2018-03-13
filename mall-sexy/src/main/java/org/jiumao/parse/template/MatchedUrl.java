@@ -13,10 +13,10 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class MatchedUrl {
 
-    private String startWith = "";
-    private String endWith = "";
-    private String contains = "";
-    
+    private String startWith = null;
+    private String endWith = null;
+    private String contains = null;
+
 
     private String regex;// 正则表达式
     private int depth = 3;// 抓取深度，
@@ -67,9 +67,12 @@ public class MatchedUrl {
 
     public static boolean isMatched(MatchedUrl matched, String url) {
         if (StringUtils.isEmpty(url)) return false;
-        return url.startsWith(matched.getStartWith())//
-                || url.endsWith(matched.getEndWith())//
-                || url.contains(matched.getContains());
+        boolean res = null == matched.getStartWith() ? false : url.startsWith(matched.getStartWith());
+        if (res) return true;
+        res = null == matched.getEndWith() ? false : url.endsWith(matched.getEndWith());
+        if (res) return true;
+        res = null == matched.getContains() ? false : url.contains(matched.getContains());
+        return res;
     }
 
 }

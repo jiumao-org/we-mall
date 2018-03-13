@@ -1,5 +1,7 @@
 package org.jiumao.parse.store;
 
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * 数据持久化
  * @author Bevis-Pei<ppf@jiumao.org> 
@@ -22,7 +24,7 @@ public class Sink {
         this.pip = pip;
     }
     
-    public void save(String json) throws Exception {
+    public void save(JSONObject json) throws Exception {
         pip.accept(json);
         pip.write();
     }

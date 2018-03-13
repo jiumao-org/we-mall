@@ -1,5 +1,6 @@
 package org.jiumao.parse.store;
 
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 数据存储方式，串行写
@@ -8,7 +9,7 @@ package org.jiumao.parse.store;
  * @date 2018/03/11
  */
 public interface Pipeline {
-    void accept(String json);
+    void accept(JSONObject json);
 
     void write() throws Exception;
 }

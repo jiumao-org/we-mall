@@ -12,11 +12,9 @@ import java.util.concurrent.Future;
 public class ThreadPool {
 
     private static final ExecutorService THREAD_POOL;
-    private static final Thread[] RUN_TASKS;// 执行程序主要任务线程
     
     static {
         int nThreads = Runtime.getRuntime().availableProcessors();
-        RUN_TASKS = new Thread[nThreads*2];
         THREAD_POOL = Executors.newFixedThreadPool(nThreads);
     }
     
@@ -33,9 +31,4 @@ public class ThreadPool {
         return THREAD_POOL;
     }
 
-    public static Thread[] getRunTasks() {
-        return RUN_TASKS;
-    }
-    
-    
 }

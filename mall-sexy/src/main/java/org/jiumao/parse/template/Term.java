@@ -11,6 +11,8 @@ public class Term {
     private List<String> params;
     private Format<?> format;
     private String path;
+    private String attr;// html标签 属性
+    private Type type = Type.Txt;
 
 
     public Term(String name, String path) {
@@ -61,6 +63,21 @@ public class Term {
         this.format = format;
     }
 
+    public String getAttr() {
+        return attr;
+    }
 
+    public void setAttr(String attr) {
+        this.attr = attr;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public Term setType(Type type) {
+        this.type = type;
+        return this;
+    }
 
 }

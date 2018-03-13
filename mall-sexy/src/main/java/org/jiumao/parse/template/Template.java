@@ -6,8 +6,13 @@ import java.util.List;
 
 import org.jiumao.common.utils.CheckUtil;
 import org.jiumao.parse.Format;
+import org.jiumao.parse.store.Sink;
 
-
+/**
+ * json解析模板
+ * @author Bevis-Pei<ppf@jiumao.org> 
+ * @date 2018/03/12
+ */
 public class Template {
     // 网站 资源
     private List<String> params = Collections.emptyList();// url 变化参数，用于拼接字符串
@@ -36,6 +41,8 @@ public class Template {
     // 解析规则
     private List<Term> terms = Collections.emptyList();
     private List<Template> resource = Collections.emptyList();
+    
+    private Sink sink;
 
     public Template(String regrex) {
         super();
@@ -91,10 +98,10 @@ public class Template {
         return this;
     }
 
-    public List<Term> addTerm(Term t) {
+    public Template addTerm(Term t) {
         if (terms.size() == 0) this.terms = new ArrayList<>(1);
         if (null != t) terms.add(t);
-        return terms;
+        return this;
     }
 
     public List<Template> addResource(Template r) {
@@ -145,6 +152,18 @@ public class Template {
 
     public void setRegrex(String regrex) {
         this.regrex = regrex;
+    }
+
+    public void addSink(Sink sink) {
+        this.setSink(sink);
+    }
+
+    public Sink getSink() {
+        return sink;
+    }
+
+    public void setSink(Sink sink) {
+        this.sink = sink;
     }
 
 }

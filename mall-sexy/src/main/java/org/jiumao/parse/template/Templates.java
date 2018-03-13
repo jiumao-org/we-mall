@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
@@ -22,17 +23,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.alibaba.fastjson.JSONObject;
+
+import kafka.utils.json.JsonObject;
+
 public class Templates {
 
     private static Map<Pattern, Template> tmpls = new ConcurrentHashMap<>();
-
-    public static Templates toTmpl(String xml) {
-        return null;
-    }
-
-    public static String toXml(Templates tmpl) {
-        return null;
-    }
+    
 
     public static Format<String> stringFormat = (source, params) -> {
         return String.format(source, params.toArray());
@@ -61,49 +59,6 @@ public class Templates {
     }
 
 
-    public static Map<String, Set<String>> getUrls(Resource source) {
-        Map<String, Set<String>> urls = Collections.emptyMap();
-        Connection con = Jsoup.connect(source.getUrl());
-        Template tmpl = source.getTemplate();
-        Document doc = null;
-        try {
-            switch (tmpl.getType()) {
-                case HttpGet:
-                    doc = con.get();
-                    break;
-
-                case HttpPost:
-                    doc = con.post();
-                    break;
-                default:
-                    break;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (doc != null) {
-            urls = new HashMap<>(2);
-            List<Term> terms = tmpl.getTerms();
-
-            for (Term term : terms) {
-                Elements eles = doc.select(term.getPath());
-                Set<String> us = new HashSet<>();
-                for (Element e : eles) {
-                    String url = e.absUrl("href");
-                    if (tmpl.isMatchUrl(url)) {
-                        us.add(url);
-                    }
-                }
-                urls.put(term.getName(), us);
-            }
-        }
-        return urls;
-    }
-    
-    
-    public static void getPages(Resource source) {
-        
-    }
 
     public static String toAbsUrl(String baseUri, String uri) {
         try {
