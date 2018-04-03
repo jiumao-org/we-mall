@@ -28,11 +28,13 @@ import com.alibaba.fastjson.JSONObject;
 
 public class HtmlParser implements Parser {
     public final static HtmlParser PARSER = new HtmlParser();
+
     @Override
     public JSONObject parse(Source source, Template tmpl) {
         Document doc = Jsoup.parse(source.content);
         JSONObject jsonRes = new JSONObject();
         List<Term> terms = tmpl.getTerms();
+        boolean pic = false;
         for (Term term : terms) {
             Elements eles = doc.select(term.getPath());
             if (1 == eles.size()) {
@@ -44,9 +46,15 @@ public class HtmlParser implements Parser {
                 for (Element e : eles) {
                     res[i++] = ele(term, e, source);
                 }
+                if (term.getType() == Type.Img && eles.size() != 0) {
+                    pic = true;
+                }
                 jsonRes.put(term.getName(), res);
             }
 
+        }
+        if (!pic) {
+            System.err.println("图片采集为空：" + source.baseUri);
         }
         UrlPool.addDoneUrl(source.baseUri);
         return jsonRes;
@@ -79,22 +87,23 @@ public class HtmlParser implements Parser {
     private String img(Element e, Source source) {
         String v = e.attr("src");
         v = Templates.toAbsUrl(source.baseUri, v);
-        String picPath = MixAll.ProjectPath +File.separator+ "pics";
+        String picPath = MixAll.ProjectPath + File.separator + "pics";
         String fileName;
         try {
-            fileName = URLEncoder.encode(v,"utf-8");
+            fileName = URLEncoder.encode(v, "utf-8");
             FileUtil.downImg(picPath, fileName, v);
         } catch (UnsupportedEncodingException e1) {
             e1.printStackTrace();
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-        
+
         return v;
     }
+
     public static void main(String[] args) throws Exception {
         String v = "https://www.dssz.com/42827.html";
-        System.out.println(URLEncoder.encode(v,"utf-8"));
+        System.out.println(URLEncoder.encode(v, "utf-8"));
     }
 
 }

@@ -1,7 +1,10 @@
 package org.jiumao.parse.template;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,6 +19,9 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.codec.net.URLCodec;
+import org.apache.commons.lang3.CharSet;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.jiumao.parse.Format;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -30,7 +36,7 @@ import kafka.utils.json.JsonObject;
 public class Templates {
 
     private static Map<Pattern, Template> tmpls = new ConcurrentHashMap<>();
-    
+
 
     public static Format<String> stringFormat = (source, params) -> {
         return String.format(source, params.toArray());
@@ -66,8 +72,20 @@ public class Templates {
             return base.resolve(uri).toString();
         } catch (Exception e) {
             e.printStackTrace();
-            return "";
+            try {
+                return URLEncoder.encode(uri,"utf-8");
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+                return "";
+            }
         }
+    }
+
+
+    public static void main(String[] args) {
+        String baseUri = "http://www.baidu.com";
+        String uri = "裴鹏飞 .jpg";
+        toAbsUrl(baseUri, uri);
     }
 
 }

@@ -29,7 +29,6 @@ public class PageParser implements Parser {
     @Override
     public JSONObject parse(Source source, Template tmpl) {
         Document doc = Jsoup.parse(source.content);
-        JSONObject jsonRes = new JSONObject();
         List<Term> terms = tmpl.getTerms();
         for (Term term : terms) {
             // 提取url

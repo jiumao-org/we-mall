@@ -56,6 +56,14 @@ public class AsynHttpClient {
     }
 
 
+    /**
+     * @deprecated 有乱码
+     * @param url
+     * @param callback
+     * @param headers
+     * @return
+     */
+    @Deprecated 
     public static Future<HttpResponse> GET(String url, FutureCallback<HttpResponse> callback,
             Map<String, String> headers) {
         HttpGet get = new HttpGet(url);

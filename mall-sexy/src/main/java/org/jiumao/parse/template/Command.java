@@ -1,9 +1,9 @@
 package org.jiumao.parse.template;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jiumao.parse.parser.HtmlParser;
 import org.jiumao.parse.parser.PageParser;
 import org.jiumao.parse.parser.UrlParser;
@@ -34,39 +34,40 @@ public class Command implements Runnable {
         String url = UrlPool.popUrl();
         if (url == null) {
             TimeUnit.SECONDS.sleep(10);
-            if (url == null) return;
-        }
-        final Source source = new Source();
-        source.baseUri = url;
-        Template tmpl = null;
-        try {
-            tmpl = Templates.getTemplate(url);
-            if (url.contains(".html")) {
-                System.out.println(url);
-            }
-        } catch (Exception e) {
-            System.out.println(url);
             return;
         }
-        Type type = tmpl.getType();
-        switch (type) {
-            case HttpPost:
-                break;
-            case HttpGet:
-                try {
-                    source.content = Jsoup.connect(url).get().html();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    System.err.println(url);
-                }
-                exec(source, tmpl);
-                break;
-            default:
-                break;
 
+        final Source source = new Source();
+        source.baseUri = url;
+        Template tmpl = Templates.getTemplate(url);
+        if (url.contains(".html")) System.out.println("采集的网页" + url);
+        if (tmpl == null) return;
+
+        downSource(source, tmpl);
+        if (StringUtils.isEmpty(source.content)) {
+            return;
         }
-        
+
+        exec(source, tmpl);
+    }
+
+
+    private void downSource(final Source source, Template tmpl) {
+        Type type = tmpl.getType();
+        try {
+            switch (type) {
+                case HttpPost:
+                    break;
+                case HttpGet:
+                    source.content = Jsoup.connect(source.baseUri).get().html();
+                    break;
+                default:
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println(source.baseUri);
+        }
     }
 
 

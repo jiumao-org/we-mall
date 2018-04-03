@@ -2,6 +2,7 @@ package org.jiumao.common.utils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +10,8 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 
 /**
  * 文件相关操作
@@ -39,18 +42,7 @@ public class FileUtil {
         File dir = new File(path);
         if (!dir.exists()) dir.mkdirs();
 
-        File file = new File(path + File.separator + fileName);
-        URL url = new URL(imgUrl);
-        URLConnection connection = url.openConnection();
-        connection.setConnectTimeout(10 * 1000);
-        InputStream in = connection.getInputStream();
-        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-        byte[] buf = new byte[1024];
-        int size;
-        while (-1 != (size = in.read(buf))) {
-            out.write(buf, 0, size);
-        }
-        out.close();
-        in.close();
+        HttpUtil.downImg(imgUrl, fileName, path);
+
     }
 }

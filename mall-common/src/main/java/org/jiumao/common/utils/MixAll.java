@@ -8,4 +8,8 @@ public class MixAll {
     public static final String USR_HOME = "usr.home";
 
     public static final byte[] NULL_BYTE = new byte[0];
+    
+    public static void main(String[] args) {
+        System.out.println(ProjectPath);
+    }
 }
